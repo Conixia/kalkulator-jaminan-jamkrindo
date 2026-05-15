@@ -438,37 +438,50 @@ button { cursor: pointer; font-family: var(--sans); }
   .header-inner  { padding: 8px 12px; min-height: 54px; }
   .logo-side img { height: 38px; }
 
-  /* ── HERO MOBILE ──────────────────────────────────
-     .hero-orang adalah <img height:100% width:auto>
-     Foto group otomatis scale ke tinggi hero (215px)
-     width=auto → browser hitung proporsional
-     Semua orang terlihat tanpa crop. TIDAK PERLU override.
+  /* Hero */
+  .hero { height: 220px; }
 
-     Yang perlu disesuaikan:
-     1. Tinggi hero sedikit dikurangi (215px)
-     2. Kantor: opacity 0.2 → latar tidak ramai
-     3. Overlay: lebih kuat di kiri → teks bersih
-     4. hero-content: max-width lebih lebar (foto orang
-        proporsional lebih kecil di layar sempit)
-  ─────────────────────────────────────────────────── */
-  .hero { height: 215px; }
-
+  /* Kantor: sangat subtle agar latar tidak ramai */
   .hero-kantor.vis { opacity: 0.2; }
 
+  /*
+   * FOTO ORANG — fix untuk foto group landscape di layar sempit:
+   *
+   * Problem: height:100% + width:auto → foto landscape jadi sangat lebar
+   *          (misal 215px tinggi = 430-600px lebar) → overflow ke area teks
+   *
+   * Solusi: beri LEBAR EKSPLISIT 52% pada mobile
+   *   - height: 100% + width: 52% + object-fit: cover
+   *   → foto mengisi panel kanan 52% secara penuh
+   *   - object-position: right top
+   *   → kepala orang selalu terlihat (atas), orang paling kanan (sisi kanan)
+   *   → area teks kiri 48% bebas dari foto
+   *
+   * Ini adalah teknik standar untuk hero foto group di mobile.
+   */
+  .hero-orang {
+    height: 100%;
+    width: 52%;
+    object-fit: cover;
+    object-position: right top;
+  }
+
+  /* Overlay: kuat di kiri, fade di tengah, bersih di kanan */
   .hero-overlay {
     background: linear-gradient(
       to right,
       rgba(10,22,40,1)    0%,
-      rgba(13,27,62,.98) 30%,
-      rgba(13,27,62,.82) 50%,
-      rgba(13,27,62,.3)  65%,
-      transparent        76%
+      rgba(13,27,62,.98) 28%,
+      rgba(13,27,62,.75) 46%,
+      rgba(13,27,62,.1)  60%,
+      transparent        70%
     );
   }
 
+  /* Teks di kiri 50% yang bersih */
   .hero-content {
-    max-width: 68%;
-    padding: 0 16px;
+    max-width: 52%;
+    padding: 0 14px;
   }
 
   /* Footer */
@@ -493,9 +506,10 @@ button { cursor: pointer; font-family: var(--sans); }
 
 /* ── Mobile kecil (≤ 400px) ── */
 @media (max-width: 400px) {
-  .hero         { height: 200px; }
-  .hero-content { max-width: 72%; padding: 0 12px; }
-  .hero-badge   { font-size: 8px; padding: 3px 10px; }
+  .hero          { height: 205px; }
+  .hero-orang    { width: 56%; }
+  .hero-content  { max-width: 50%; padding: 0 12px; }
+  .hero-badge    { font-size: 8px; padding: 3px 10px; }
   .logo-side img { height: 33px; }
   .header-inner  { padding: 6px 10px; min-height: 48px; }
   .tarif-row     { display: grid; grid-template-columns: 1fr 1fr; }
