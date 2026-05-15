@@ -128,7 +128,11 @@ body {
 /* Layer 1 — Foto kantor: fade lembut di tengah, TAMPIL DI SEMUA UKURAN */
 .hero-office {
   position: absolute; inset: 0;
-  background: url('assets/kantor.png') center/cover no-repeat;
+  /*
+   * auto 100% = scale by HEIGHT only (bukan cover yg memaksa kedua dimensi).
+   * Hasil: foto tidak di-zoom, proporsi asli terjaga, posisi di tengah.
+   */
+  background: url('assets/kantor.png') center / auto 100% no-repeat;
   opacity: 0; transition: opacity .4s;
   -webkit-mask-image: linear-gradient(
     to right,
@@ -360,43 +364,45 @@ body {
   .logo-side img { height: 38px; }
   .logo-badge .lb-name { font-size: 10px; }
 
-  /* ── Hero mobile: foto orang jadi background penuh ──
-     Alih-alih panel sempit 44% (yang membuat foto terpotong parah),
-     di mobile foto orang diperlebar ke 100% dengan opacity semi-transparan.
-     Gradient kiri yang kuat memastikan teks tetap terbaca.
-     Hasilnya: foto orang TERLIHAT PENUH, tidak terpotong, tidak kebesaran. */
+  /* ── Hero mobile ──
+     Foto orang: TETAP di panel kanan seperti desktop, tapi sedikit lebih lebar (50%).
+     OPACITY: 1 (solid penuh, tidak pudar/transparan sama sekali).
+     background-size auto 100% = sama persis dengan logika Python app (scale by height).
+     Gradient ::before tetap ada di layer atas foto → teks terbaca,
+     tapi FOTO-nya sendiri solid 100% opacity. */
   .hero          { height: 210px; }
 
   .hero-person {
-    width: 100%;                              /* bentang full lebar layar */
-    background-position: right top;
-    background-size: auto 100%;              /* isi tinggi penuh, lebar proporsional */
+    width: 50%;                        /* sedikit lebih lebar dari desktop (44%) */
+    background-position: right bottom; /* pastikan orang muncul dari bawah/kanan */
+    background-size: auto 100%;        /* scale by height, sama seperti desktop */
   }
-  .hero-person.vis { opacity: 0.65; }        /* semi-transparan agar tidak dominan */
+  /* SOLID: opacity 1, tidak ada fade/transparan pada foto orang */
+  .hero-person.vis { opacity: 1; }
 
-  /* Gradient lebih kuat dari kiri agar teks terbaca di atas foto */
+  /* Gradient di ATAS foto (::before) untuk area teks kiri — foto tetap solid */
   .hero-person::before {
     background: linear-gradient(
       to right,
-      #0D1B3E 0%,
-      rgba(13,27,62,.85) 35%,
-      rgba(13,27,62,.4)  65%,
-      transparent        90%
+      #0D1B3E        0%,
+      rgba(13,27,62,.75) 42%,
+      transparent    68%
     );
   }
 
-  /* Foto kantor: tetap tampil, sesuaikan mask agar lebih pas */
+  /* Foto kantor: tetap tampil, mask sedikit disesuaikan untuk layar sempit */
   .hero-office {
+    background-position: center / auto 100%;
     -webkit-mask-image: linear-gradient(
-      to right, transparent 10%, rgba(0,0,0,.35) 35%, rgba(0,0,0,.35) 72%, transparent 90%
+      to right, transparent 8%, rgba(0,0,0,.4) 30%, rgba(0,0,0,.4) 68%, transparent 88%
     );
     mask-image: linear-gradient(
-      to right, transparent 10%, rgba(0,0,0,.35) 35%, rgba(0,0,0,.35) 72%, transparent 90%
+      to right, transparent 8%, rgba(0,0,0,.4) 30%, rgba(0,0,0,.4) 68%, transparent 88%
     );
   }
 
-  /* Teks bisa lebih lebar karena foto orang sudah jadi background */
-  .hero-content  { max-width: 72%; padding: 0 16px; }
+  /* Teks: max-width 55% memberi ruang untuk foto orang yang 50% di kanan */
+  .hero-content  { max-width: 55%; padding: 0 14px; }
 
   /* Grid produk: 1 kolom */
   .product-grid  { grid-template-columns: 1fr; gap: 10px; }
