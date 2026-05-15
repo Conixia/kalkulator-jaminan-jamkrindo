@@ -148,8 +148,8 @@ button { cursor: pointer; font-family: var(--sans); }
 .hero-kantor {
   position: absolute; inset: 0;
   /* background-image diset oleh JS di initHero() — path relatif ke index.html */
-  background-size: auto 100%;
-  background-position: center;
+  background-size: cover;
+  background-position: center center;
   background-repeat: no-repeat;
   opacity: 0;
   transition: opacity .5s ease;
