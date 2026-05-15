@@ -148,7 +148,10 @@ button { cursor: pointer; font-family: var(--sans); }
 .hero-kantor {
   position: absolute; inset: 0;
   /* background-image diset oleh JS di initHero() — path relatif ke index.html */
-  background-size: cover;
+  /* 100% auto = scale by WIDTH (sama persis logika Python app)
+     → foto kantor mengisi penuh lebar hero, tidak ada strip/patah
+     → tinggi otomatis proporsional, center-crop vertikal jika perlu */
+  background-size: 100% auto;
   background-position: center center;
   background-repeat: no-repeat;
   opacity: 0;
@@ -170,7 +173,7 @@ button { cursor: pointer; font-family: var(--sans); }
   );
 }
 /* Desktop: kantor subtle (0.5), tidak terlalu dominan */
-.hero-kantor.vis { opacity: 0.5; }
+.hero-kantor.vis { opacity: 0.75; }   /* desktop: lebih terang, sesuai referensi */
 
 /* Layer 2 — Foto orang: <img> tag (BUKAN background-image)
    ─────────────────────────────────────────────────────────
