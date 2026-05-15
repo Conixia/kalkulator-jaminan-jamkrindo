@@ -361,37 +361,43 @@ body {
   .logo-side img { height: 38px; }
   .logo-badge .lb-name { font-size: 10px; }
 
-  /* Hero tinggi */
+  /* Hero */
   .hero { height: 210px; }
 
   /*
+   * KANTOR di mobile: opacity dikecilkan ke 0.25
+   * → gedung tetap ada sebagai latar subtle, tidak dominan/ramai
+   * → area teks jadi bersih dan mudah dibaca
+   */
+  .hero-office.vis { opacity: 0.25; }
+
+  /*
    * FOTO ORANG di mobile:
-   * - width 52%  → panel kanan cukup lebar
-   * - background-size: contain → foto SELALU tampil penuh,
-   *   tidak pernah dipotong apapun dimensi aslinya
-   * - background-position: right bottom → orang berdiri di kanan bawah
-   * - opacity 1 (solid, tidak ada fade/transparan pada foto)
-   *
-   * Gradient ::before tetap ada di ATAS foto untuk area teks kiri,
-   * tapi FOTO itu sendiri tidak punya opacity/fade sama sekali.
+   * - width 48% → panel kanan yang proporsional
+   * - background-size: cover + position right top
+   *   → foto mengisi panel penuh, orang di sisi kanan terlihat jelas
+   * - opacity 1 (solid, tidak ada efek pudar)
    */
   .hero-person {
-    width: 52%;
-    background-size: contain;
-    background-position: right bottom;
+    width: 48%;
+    background-size: cover;
+    background-position: right top;
   }
   .hero-person.vis { opacity: 1; }
+
+  /* Gradient lebih kuat di kiri → area teks bersih, foto orang kanan jelas */
   .hero-person::before {
     background: linear-gradient(
       to right,
       #0D1B3E            0%,
-      rgba(13,27,62,.72) 40%,
-      transparent        68%
+      rgba(13,27,62,.88) 40%,
+      rgba(13,27,62,.3)  65%,
+      transparent        82%
     );
   }
 
-  /* Teks: 53% kiri — foto orang isi 52% kanan (sedikit overlap di tengah, ditutupi gradient) */
-  .hero-content { max-width: 53%; padding: 0 14px; }
+  /* Teks mengisi sisi kiri yang bersih */
+  .hero-content { max-width: 56%; padding: 0 14px; }
 
   /* Product grid: 1 kolom */
   .product-grid   { grid-template-columns: 1fr; gap: 10px; }
@@ -415,8 +421,8 @@ body {
 /* ── HP kecil (≤ 400px) ── */
 @media (max-width: 400px) {
   .hero          { height: 200px; }
-  .hero-person   { width: 55%; } /* sedikit lebih lebar agar foto terlihat */
-  .hero-content  { max-width: 52%; padding: 0 12px; }
+  .hero-person   { width: 52%; }
+  .hero-content  { max-width: 54%; padding: 0 12px; }
   .hero-badge    { font-size: 8px; letter-spacing: .4px; padding: 3px 9px; }
   .logo-side img { height: 33px; }
   .header-inner  { padding: 6px 10px; min-height: 46px; }
