@@ -125,14 +125,10 @@ body {
   flex-shrink: 0;
 }
 
-/* Layer 1 — Foto kantor: fade lembut di tengah, TAMPIL DI SEMUA UKURAN */
+/* Layer 1 — Foto kantor: fade lembut di tengah */
 .hero-office {
   position: absolute; inset: 0;
-  /*
-   * auto 100% = scale by HEIGHT only (bukan cover yg memaksa kedua dimensi).
-   * Hasil: foto tidak di-zoom, proporsi asli terjaga, posisi di tengah.
-   */
-  background: url('assets/kantor.png') center / auto 100% no-repeat;
+  background: url('assets/kantor.png') center / cover no-repeat;
   opacity: 0; transition: opacity .4s;
   -webkit-mask-image: linear-gradient(
     to right,
@@ -345,94 +341,85 @@ body {
 .h-amount { font-family: var(--f-serif); font-size: 16px; font-weight: 700; white-space: nowrap; }
 
 /* ══ RESPONSIVE ═══════════════════════════════════════════
-   PRINSIP:
-   - Foto orang & foto kantor TAMPIL di SEMUA ukuran layar
-   - Di mobile, foto orang jadi background penuh (bukan panel sempit)
-     sehingga tidak terpotong dan terlihat proporsional
-   - Kantor tetap sebagai layer tengah yang fade
+   DESKTOP (> 580px): tidak ada perubahan sama sekali.
+   MOBILE  (≤ 580px): hero-person pakai background-size:contain
+     → foto orang SELALU tampil penuh, tidak pernah terpotong,
+       opacity 1 (solid), tidak ada efek pudar.
+     Foto kantor tetap tampil dengan mask yg sama (cover, center).
 ═════════════════════════════════════════════════════════ */
 
-/* ── Tablet (≤ 768px) ── */
+/* ── Tablet ── */
 @media (max-width: 768px) {
   .logo-side img { height: 44px; }
 }
 
-/* ── HP portrait (≤ 580px) ── */
+/* ── HP (≤ 580px) ── */
 @media (max-width: 580px) {
+
   /* Header */
   .header-inner  { padding: 8px 12px; min-height: 52px; }
   .logo-side img { height: 38px; }
   .logo-badge .lb-name { font-size: 10px; }
 
-  /* ── Hero mobile ──
-     Foto orang: TETAP di panel kanan seperti desktop, tapi sedikit lebih lebar (50%).
-     OPACITY: 1 (solid penuh, tidak pudar/transparan sama sekali).
-     background-size auto 100% = sama persis dengan logika Python app (scale by height).
-     Gradient ::before tetap ada di layer atas foto → teks terbaca,
-     tapi FOTO-nya sendiri solid 100% opacity. */
-  .hero          { height: 210px; }
+  /* Hero tinggi */
+  .hero { height: 210px; }
 
+  /*
+   * FOTO ORANG di mobile:
+   * - width 52%  → panel kanan cukup lebar
+   * - background-size: contain → foto SELALU tampil penuh,
+   *   tidak pernah dipotong apapun dimensi aslinya
+   * - background-position: right bottom → orang berdiri di kanan bawah
+   * - opacity 1 (solid, tidak ada fade/transparan pada foto)
+   *
+   * Gradient ::before tetap ada di ATAS foto untuk area teks kiri,
+   * tapi FOTO itu sendiri tidak punya opacity/fade sama sekali.
+   */
   .hero-person {
-    width: 50%;                        /* sedikit lebih lebar dari desktop (44%) */
-    background-position: right bottom; /* pastikan orang muncul dari bawah/kanan */
-    background-size: auto 100%;        /* scale by height, sama seperti desktop */
+    width: 52%;
+    background-size: contain;
+    background-position: right bottom;
   }
-  /* SOLID: opacity 1, tidak ada fade/transparan pada foto orang */
   .hero-person.vis { opacity: 1; }
-
-  /* Gradient di ATAS foto (::before) untuk area teks kiri — foto tetap solid */
   .hero-person::before {
     background: linear-gradient(
       to right,
-      #0D1B3E        0%,
-      rgba(13,27,62,.75) 42%,
-      transparent    68%
+      #0D1B3E            0%,
+      rgba(13,27,62,.72) 40%,
+      transparent        68%
     );
   }
 
-  /* Foto kantor: tetap tampil, mask sedikit disesuaikan untuk layar sempit */
-  .hero-office {
-    background-position: center / auto 100%;
-    -webkit-mask-image: linear-gradient(
-      to right, transparent 8%, rgba(0,0,0,.4) 30%, rgba(0,0,0,.4) 68%, transparent 88%
-    );
-    mask-image: linear-gradient(
-      to right, transparent 8%, rgba(0,0,0,.4) 30%, rgba(0,0,0,.4) 68%, transparent 88%
-    );
-  }
+  /* Teks: 53% kiri — foto orang isi 52% kanan (sedikit overlap di tengah, ditutupi gradient) */
+  .hero-content { max-width: 53%; padding: 0 14px; }
 
-  /* Teks: max-width 55% memberi ruang untuk foto orang yang 50% di kanan */
-  .hero-content  { max-width: 55%; padding: 0 14px; }
-
-  /* Grid produk: 1 kolom */
-  .product-grid  { grid-template-columns: 1fr; gap: 10px; }
-  .grid-wrap     { padding: 14px; }
-  .prod-card-body{ padding: 14px 16px 10px; }
+  /* Product grid: 1 kolom */
+  .product-grid   { grid-template-columns: 1fr; gap: 10px; }
+  .grid-wrap      { padding: 14px; }
+  .prod-card-body { padding: 14px 16px 10px; }
 
   /* Form kalkulator: 1 kolom */
-  .form-grid     { grid-template-columns: 1fr; }
-  .calc-body     { padding: 16px 14px 24px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .calc-body { padding: 16px 14px 24px; }
 
-  /* Tarif */
+  /* Tarif pills */
   .tarif-row  { gap: 6px; }
   .tarif-card { min-width: 76px; }
 
-  /* Footer */
-  .footer-inner  { flex-direction: column; gap: 8px; }
-  .footer-right  { text-align: left; }
-  .footer        { padding: 10px 14px; }
+  /* Footer: tumpuk vertikal */
+  .footer-inner { flex-direction: column; gap: 8px; }
+  .footer-right { text-align: left; }
+  .footer       { padding: 10px 14px; }
 }
 
-/* ── HP sangat kecil (≤ 400px) ── */
+/* ── HP kecil (≤ 400px) ── */
 @media (max-width: 400px) {
-  .hero          { height: 195px; }
-  .hero-content  { max-width: 78%; padding: 0 13px; }
+  .hero          { height: 200px; }
+  .hero-person   { width: 55%; } /* sedikit lebih lebar agar foto terlihat */
+  .hero-content  { max-width: 52%; padding: 0 12px; }
   .hero-badge    { font-size: 8px; letter-spacing: .4px; padding: 3px 9px; }
-
   .logo-side img { height: 33px; }
   .header-inner  { padding: 6px 10px; min-height: 46px; }
-
-  /* Tarif: 2 kolom grid kecil */
   .tarif-row     { display: grid; grid-template-columns: 1fr 1fr; }
   .tarif-card    { min-width: unset; }
 }
