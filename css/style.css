@@ -147,7 +147,10 @@ button { cursor: pointer; font-family: var(--sans); }
 /* Layer 1 — Foto kantor (decorative, center-fade) */
 .hero-kantor {
   position: absolute; inset: 0;
-  background: url('../assets/kantor.png') center / cover no-repeat;
+  /* background-image diset oleh JS di initHero() — path relatif ke index.html */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   opacity: 0;
   transition: opacity .5s ease;
   /* Fade in dari kiri & kanan → hanya tampil di tengah */
