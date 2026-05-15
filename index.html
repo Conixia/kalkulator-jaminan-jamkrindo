@@ -111,51 +111,76 @@ body {
 /* ══════════════════════════════════
    WELCOME SCREEN
 ══════════════════════════════════ */
+/* ══════════════════════════════════
+   HERO — 3 layer compositing
+   Layer 0: gradient navy (selalu tampil)
+   Layer 1: foto kantor (fade in/out kiri-kanan, SELALU tampil)
+   Layer 2: foto orang (kanan di desktop, penuh di mobile)
+   Layer 3: overlay gelap untuk keterbacaan teks
+══════════════════════════════════ */
 .hero {
   position: relative; overflow: hidden;
-  height: clamp(180px, 25vw, 230px);
+  height: 230px;
   background: linear-gradient(100deg,#0D1B3E 0%,#183262 55%,#1E3D6A 100%);
   flex-shrink: 0;
 }
 
-/* Layer 1: foto kantor di tengah (fade in/out kiri-kanan) */
+/* Layer 1 — Foto kantor: fade lembut di tengah, TAMPIL DI SEMUA UKURAN */
 .hero-office {
   position: absolute; inset: 0;
   background: url('assets/kantor.png') center/cover no-repeat;
   opacity: 0; transition: opacity .4s;
-  -webkit-mask-image: linear-gradient(to right, transparent 20%, rgba(0,0,0,.5) 38%, rgba(0,0,0,.5) 72%, transparent 88%);
-  mask-image:         linear-gradient(to right, transparent 20%, rgba(0,0,0,.5) 38%, rgba(0,0,0,.5) 72%, transparent 88%);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 15%,
+    rgba(0,0,0,.55) 35%,
+    rgba(0,0,0,.55) 68%,
+    transparent 86%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 15%,
+    rgba(0,0,0,.55) 35%,
+    rgba(0,0,0,.55) 68%,
+    transparent 86%
+  );
 }
 .hero-office.vis { opacity: 1; }
 
-/* Layer 2: foto orang — SELALU TAMPIL di semua ukuran, posisi kanan */
+/* Layer 2 — Foto orang: DESKTOP — panel kanan 44% */
 .hero-person {
   position: absolute; right: 0; top: 0; bottom: 0;
   background: url('assets/hero.png') right top / auto 100% no-repeat;
-  width: 44%; opacity: 0; transition: opacity .4s;
+  width: 44%;
+  opacity: 0; transition: opacity .4s;
 }
 .hero-person.vis { opacity: 1; }
-/* Gradient kiri foto orang agar menyatu dan teks tetap terbaca */
+
+/* Blend foto orang ke gradient (dari kiri) */
 .hero-person::before {
   content: '';
   position: absolute; inset: 0;
-  background: linear-gradient(to right, #0D1B3E 0%, rgba(13,27,62,0.3) 35%, transparent 60%);
+  background: linear-gradient(to right,
+    #0D1B3E 0%,
+    rgba(13,27,62,.5) 25%,
+    transparent 55%
+  );
   pointer-events: none;
 }
 
-/* Layer 3: teks — mengisi sisi kiri, selalu memberi ruang untuk foto */
+/* Layer 3 — Teks kiri */
 .hero-content {
-  position: relative; z-index: 2;
+  position: relative; z-index: 3;
   display: flex; flex-direction: column; justify-content: center;
   height: 100%;
-  padding: 0 clamp(14px, 4%, 40px);
-  max-width: 58%; /* maks 58% dari lebar layar, foto isi 42% kanan */
+  padding: 0 clamp(16px, 4%, 40px);
+  max-width: 56%;
 }
 .hero-badge {
-  display: inline-block; padding: 4px 11px;
+  display: inline-block; padding: 4px 12px;
   background: #1A5CB0; color: #fff;
   font-size: 9px; font-weight: 700; letter-spacing: .8px;
-  border-radius: 2px; margin-bottom: 10px; width: fit-content;
+  border-radius: 2px; margin-bottom: 11px; width: fit-content;
 }
 .hero-title {
   font-family: var(--f-serif);
@@ -163,7 +188,7 @@ body {
   font-weight: 700; color: #fff; line-height: 1.15;
 }
 .hero-title .hl { color: #5BAEF0; }
-.hero-sub1 { font-size: clamp(9px, 1.5vw, 12px); color: #C8D8EB; margin-top: 8px; }
+.hero-sub1 { font-size: clamp(9px, 1.5vw, 12px); color: #C8D8EB; margin-top: 9px; }
 .hero-sub2 { font-size: clamp(8px, 1.2vw, 10px); color: #7A92A8; margin-top: 4px; }
 
 .grid-wrap { flex: 1; padding: 18px 18px 18px; }
@@ -315,66 +340,95 @@ body {
 .h-detail { font-family: var(--f-mono); font-size: 9px; color: var(--text2); margin-top: 2px; }
 .h-amount { font-family: var(--f-serif); font-size: 16px; font-weight: 700; white-space: nowrap; }
 
-/* ══ RESPONSIVE ══════════════════════════════════
-   Foto orang TIDAK pernah di-hide.
-   Setiap breakpoint menyesuaikan proporsi secara halus.
-══════════════════════════════════════════════ */
+/* ══ RESPONSIVE ═══════════════════════════════════════════
+   PRINSIP:
+   - Foto orang & foto kantor TAMPIL di SEMUA ukuran layar
+   - Di mobile, foto orang jadi background penuh (bukan panel sempit)
+     sehingga tidak terpotong dan terlihat proporsional
+   - Kantor tetap sebagai layer tengah yang fade
+═════════════════════════════════════════════════════════ */
 
-/* Tablet / HP landscape (≤ 768px) */
+/* ── Tablet (≤ 768px) ── */
 @media (max-width: 768px) {
   .logo-side img { height: 44px; }
 }
 
-/* HP portrait (≤ 580px) — layout utama HP */
+/* ── HP portrait (≤ 580px) ── */
 @media (max-width: 580px) {
   /* Header */
-  .header-inner { padding: 8px 12px; min-height: 54px; }
+  .header-inner  { padding: 8px 12px; min-height: 52px; }
   .logo-side img { height: 38px; }
   .logo-badge .lb-name { font-size: 10px; }
 
-  /* Hero: tinggi sedikit lebih besar agar foto orang terlihat cukup */
-  .hero { height: 200px; }
-  /* Foto orang: perbesar ke 46% agar lebih kelihatan di layar sempit */
-  .hero-person { width: 46%; background-position: right top; }
-  /* Teks: beri ruang untuk foto orang di kanan */
-  .hero-content { max-width: 58%; padding: 0 14px; }
-  /* Foto kantor disembunyikan di HP agar tidak terlalu ramai */
-  .hero-office { display: none; }
+  /* ── Hero mobile: foto orang jadi background penuh ──
+     Alih-alih panel sempit 44% (yang membuat foto terpotong parah),
+     di mobile foto orang diperlebar ke 100% dengan opacity semi-transparan.
+     Gradient kiri yang kuat memastikan teks tetap terbaca.
+     Hasilnya: foto orang TERLIHAT PENUH, tidak terpotong, tidak kebesaran. */
+  .hero          { height: 210px; }
 
-  /* Product grid: 1 kolom di HP */
-  .product-grid { grid-template-columns: 1fr; gap: 10px; }
-  .grid-wrap    { padding: 14px; }
-  .prod-card-body { padding: 14px 16px 10px; }
+  .hero-person {
+    width: 100%;                              /* bentang full lebar layar */
+    background-position: right top;
+    background-size: auto 100%;              /* isi tinggi penuh, lebar proporsional */
+  }
+  .hero-person.vis { opacity: 0.65; }        /* semi-transparan agar tidak dominan */
 
-  /* Form: 1 kolom */
-  .form-grid { grid-template-columns: 1fr; }
-  .calc-body { padding: 16px 14px 24px; }
+  /* Gradient lebih kuat dari kiri agar teks terbaca di atas foto */
+  .hero-person::before {
+    background: linear-gradient(
+      to right,
+      #0D1B3E 0%,
+      rgba(13,27,62,.85) 35%,
+      rgba(13,27,62,.4)  65%,
+      transparent        90%
+    );
+  }
 
-  /* Tarif pills */
+  /* Foto kantor: tetap tampil, sesuaikan mask agar lebih pas */
+  .hero-office {
+    -webkit-mask-image: linear-gradient(
+      to right, transparent 10%, rgba(0,0,0,.35) 35%, rgba(0,0,0,.35) 72%, transparent 90%
+    );
+    mask-image: linear-gradient(
+      to right, transparent 10%, rgba(0,0,0,.35) 35%, rgba(0,0,0,.35) 72%, transparent 90%
+    );
+  }
+
+  /* Teks bisa lebih lebar karena foto orang sudah jadi background */
+  .hero-content  { max-width: 72%; padding: 0 16px; }
+
+  /* Grid produk: 1 kolom */
+  .product-grid  { grid-template-columns: 1fr; gap: 10px; }
+  .grid-wrap     { padding: 14px; }
+  .prod-card-body{ padding: 14px 16px 10px; }
+
+  /* Form kalkulator: 1 kolom */
+  .form-grid     { grid-template-columns: 1fr; }
+  .calc-body     { padding: 16px 14px 24px; }
+
+  /* Tarif */
   .tarif-row  { gap: 6px; }
   .tarif-card { min-width: 76px; }
 
-  /* Footer: tumpuk vertikal */
-  .footer-inner { flex-direction: column; gap: 8px; }
-  .footer-right { text-align: left; }
-  .footer { padding: 10px 14px; }
+  /* Footer */
+  .footer-inner  { flex-direction: column; gap: 8px; }
+  .footer-right  { text-align: left; }
+  .footer        { padding: 10px 14px; }
 }
 
-/* HP kecil (≤ 400px) — layar sangat sempit */
+/* ── HP sangat kecil (≤ 400px) ── */
 @media (max-width: 400px) {
-  /* Hero: foto orang tetap tampil tapi agak lebih kecil */
-  .hero { height: 185px; }
-  .hero-person { width: 42%; background-size: auto 110%; }
-  .hero-content { max-width: 62%; padding: 0 12px; }
-  .hero-badge { font-size: 8px; letter-spacing: .5px; padding: 3px 9px; }
+  .hero          { height: 195px; }
+  .hero-content  { max-width: 78%; padding: 0 13px; }
+  .hero-badge    { font-size: 8px; letter-spacing: .4px; padding: 3px 9px; }
 
-  /* Header logo lebih kecil */
-  .logo-side img { height: 34px; }
-  .header-inner  { padding: 6px 10px; min-height: 48px; }
+  .logo-side img { height: 33px; }
+  .header-inner  { padding: 6px 10px; min-height: 46px; }
 
-  /* Tarif: 2 kolom grid agar tidak terlalu kecil */
-  .tarif-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-  .tarif-card { min-width: unset; }
+  /* Tarif: 2 kolom grid kecil */
+  .tarif-row     { display: grid; grid-template-columns: 1fr 1fr; }
+  .tarif-card    { min-width: unset; }
 }
 
 /* Scrollbar */
