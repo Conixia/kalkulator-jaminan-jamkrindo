@@ -450,7 +450,7 @@ button { cursor: pointer; font-family: var(--sans); }
      object-fit:contain + object-position:center top
        → tampilkan bagian atas foto (muka) duluan, tidak terpotong */
   .hero-orang {
-    top: 46%;
+    top: 38%;
     bottom: 0;
     left: 0;
     right: 0;
@@ -465,9 +465,9 @@ button { cursor: pointer; font-family: var(--sans); }
     background: linear-gradient(
       to bottom,
       rgba(10,22,40,1)    0%,
-      rgba(13,27,62,.92) 34%,
-      rgba(13,27,62,.2)  46%,
-      transparent        54%
+      rgba(13,27,62,.92) 30%,
+      rgba(13,27,62,.2)  40%,
+      transparent        50%
     );
   }
 
