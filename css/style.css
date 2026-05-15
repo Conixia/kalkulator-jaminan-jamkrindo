@@ -147,7 +147,7 @@ button { cursor: pointer; font-family: var(--sans); }
 /* Layer 1 — Foto kantor (decorative, center-fade) */
 .hero-kantor {
   position: absolute; inset: 0;
-  background-size: 60% auto;
+  background-size: 63% auto;
   background-position: center center;
   background-repeat: no-repeat;
   opacity: 0;
@@ -439,7 +439,12 @@ button { cursor: pointer; font-family: var(--sans); }
   /* Hero */
   .hero { height: 270px; }
 
-  /* Kantor: sangat subtle */
+  /* Kantor: opacity sangat subtle di mobile. background-size override
+     ke cover agar tidak ikut terpengaruh perubahan ukuran desktop */
+  .hero-kantor {
+    background-size: cover;
+    background-position: center center;
+  }
   .hero-kantor.vis { opacity: 0.15; }
 
   /* Foto orang: mulai TEPAT DI BAWAH teks (bukan dari atas hero)
