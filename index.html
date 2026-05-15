@@ -111,12 +111,17 @@ body {
 /* ══════════════════════════════════
    WELCOME SCREEN
 ══════════════════════════════════ */
-/* ══════════════════════════════════
-   HERO — 3 layer compositing
-   Layer 0: gradient navy (selalu tampil)
-   Layer 1: foto kantor (fade in/out kiri-kanan, SELALU tampil)
-   Layer 2: foto orang (kanan di desktop, penuh di mobile)
-   Layer 3: overlay gelap untuk keterbacaan teks
+
+/* ══════════════════════════════════════════════════════
+   HERO — pendekatan yang benar (industry standard)
+
+   Layer 0: navy gradient (CSS background pada .hero)
+   Layer 1: kantor photo — decorative, opacity terkontrol
+   Layer 2: person photo — <img> tag (BUKAN background-image)
+             height:100% + object-fit:contain = selalu tampil
+             utuh, tidak pernah terpotong, auto-scale
+   Layer 3: hero-overlay — div gradient, area teks bersih
+   Layer 4: hero-content (teks)
 ══════════════════════════════════ */
 .hero {
   position: relative; overflow: hidden;
@@ -125,52 +130,68 @@ body {
   flex-shrink: 0;
 }
 
-/* Layer 1 — Foto kantor: fade lembut di tengah */
+/* Layer 1 — Kantor: decorative, subtle, center fade */
 .hero-office {
   position: absolute; inset: 0;
   background: url('assets/kantor.png') center / cover no-repeat;
   opacity: 0; transition: opacity .4s;
   -webkit-mask-image: linear-gradient(
     to right,
-    transparent 15%,
-    rgba(0,0,0,.55) 35%,
-    rgba(0,0,0,.55) 68%,
-    transparent 86%
+    transparent 10%,
+    rgba(0,0,0,.5) 30%,
+    rgba(0,0,0,.5) 65%,
+    transparent 84%
   );
   mask-image: linear-gradient(
     to right,
-    transparent 15%,
-    rgba(0,0,0,.55) 35%,
-    rgba(0,0,0,.55) 68%,
-    transparent 86%
+    transparent 10%,
+    rgba(0,0,0,.5) 30%,
+    rgba(0,0,0,.5) 65%,
+    transparent 84%
   );
 }
-.hero-office.vis { opacity: 1; }
+.hero-office.vis { opacity: 0.55; }   /* subtle di desktop */
 
-/* Layer 2 — Foto orang: DESKTOP — panel kanan 44% */
+/* Layer 2 — Foto orang: <img> tag
+   - height 100%   = scale proporsional ke tinggi hero
+   - width auto    = lebar menyesuaikan otomatis
+   - object-fit contain = seluruh foto tampil, tidak pernah crop
+   - object-position right bottom = orang berdiri di kanan
+   Keunggulan vs background-image:
+   foto group 4 orang (landscape) SELALU tampil semua
+   di desktop maupun mobile tanpa terpotong
+*/
 .hero-person {
-  position: absolute; right: 0; top: 0; bottom: 0;
-  background: url('assets/hero.png') right top / auto 100% no-repeat;
-  width: 44%;
+  position: absolute;
+  right: 0; bottom: 0;
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  object-position: right bottom;
   opacity: 0; transition: opacity .4s;
+  display: block;
 }
 .hero-person.vis { opacity: 1; }
 
-/* Blend foto orang ke gradient (dari kiri) */
-.hero-person::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(to right,
-    #0D1B3E 0%,
-    rgba(13,27,62,.5) 25%,
-    transparent 55%
+/* Layer 3 — Overlay gradient: div tersendiri
+   Karena <img> tidak support ::before pseudo-element,
+   gradient dipindah ke div .hero-overlay
+*/
+.hero-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(
+    to right,
+    #0D1B3E            0%,
+    rgba(13,27,62,.92) 28%,
+    rgba(13,27,62,.5)  50%,
+    transparent        65%
   );
   pointer-events: none;
 }
 
-/* Layer 3 — Teks kiri */
+/* Layer 4 — Teks */
 .hero-content {
-  position: relative; z-index: 3;
+  position: relative; z-index: 2;
   display: flex; flex-direction: column; justify-content: center;
   height: 100%;
   padding: 0 clamp(16px, 4%, 40px);
@@ -341,11 +362,14 @@ body {
 .h-amount { font-family: var(--f-serif); font-size: 16px; font-weight: 700; white-space: nowrap; }
 
 /* ══ RESPONSIVE ═══════════════════════════════════════════
-   DESKTOP (> 580px): tidak ada perubahan sama sekali.
-   MOBILE  (≤ 580px): hero-person pakai background-size:contain
-     → foto orang SELALU tampil penuh, tidak pernah terpotong,
-       opacity 1 (solid), tidak ada efek pudar.
-     Foto kantor tetap tampil dengan mask yg sama (cover, center).
+   DESKTOP (> 580px): tidak ada perubahan.
+
+   MOBILE (≤ 580px):
+   .hero-person adalah <img height:100% width:auto> →
+   foto group otomatis scale ke tinggi hero, semua orang
+   terlihat tanpa crop. Hanya perlu atur:
+   - kantor opacity dikurangi (tidak dominan)
+   - overlay lebih kuat di kiri (teks bersih)
 ═════════════════════════════════════════════════════════ */
 
 /* ── Tablet ── */
@@ -362,57 +386,41 @@ body {
   .logo-badge .lb-name { font-size: 10px; }
 
   /* Hero */
-  .hero { height: 210px; }
+  .hero { height: 215px; }
 
-  /*
-   * KANTOR di mobile: opacity dikecilkan ke 0.25
-   * → gedung tetap ada sebagai latar subtle, tidak dominan/ramai
-   * → area teks jadi bersih dan mudah dibaca
-   */
+  /* Kantor: lebih subtle di mobile agar tidak ramai */
   .hero-office.vis { opacity: 0.25; }
 
-  /*
-   * FOTO ORANG di mobile:
-   * - width 48% → panel kanan yang proporsional
-   * - background-size: cover + position right top
-   *   → foto mengisi panel penuh, orang di sisi kanan terlihat jelas
-   * - opacity 1 (solid, tidak ada efek pudar)
-   */
-  .hero-person {
-    width: 48%;
-    background-size: cover;
-    background-position: right top;
-  }
-  .hero-person.vis { opacity: 1; }
+  /* Person <img>: tidak perlu override, auto-scale sudah benar */
 
-  /* Gradient lebih kuat di kiri → area teks bersih, foto orang kanan jelas */
-  .hero-person::before {
+  /* Overlay: lebih kuat di kiri untuk layar sempit */
+  .hero-overlay {
     background: linear-gradient(
       to right,
       #0D1B3E            0%,
-      rgba(13,27,62,.88) 40%,
-      rgba(13,27,62,.3)  65%,
-      transparent        82%
+      rgba(13,27,62,.95) 32%,
+      rgba(13,27,62,.6)  55%,
+      transparent        72%
     );
   }
 
-  /* Teks mengisi sisi kiri yang bersih */
-  .hero-content { max-width: 56%; padding: 0 14px; }
+  /* Teks */
+  .hero-content { max-width: 62%; padding: 0 14px; }
 
-  /* Product grid: 1 kolom */
+  /* Product grid */
   .product-grid   { grid-template-columns: 1fr; gap: 10px; }
   .grid-wrap      { padding: 14px; }
   .prod-card-body { padding: 14px 16px 10px; }
 
-  /* Form kalkulator: 1 kolom */
+  /* Form */
   .form-grid { grid-template-columns: 1fr; }
   .calc-body { padding: 16px 14px 24px; }
 
-  /* Tarif pills */
+  /* Tarif */
   .tarif-row  { gap: 6px; }
   .tarif-card { min-width: 76px; }
 
-  /* Footer: tumpuk vertikal */
+  /* Footer */
   .footer-inner { flex-direction: column; gap: 8px; }
   .footer-right { text-align: left; }
   .footer       { padding: 10px 14px; }
@@ -420,10 +428,9 @@ body {
 
 /* ── HP kecil (≤ 400px) ── */
 @media (max-width: 400px) {
-  .hero          { height: 200px; }
-  .hero-person   { width: 52%; }
-  .hero-content  { max-width: 54%; padding: 0 12px; }
-  .hero-badge    { font-size: 8px; letter-spacing: .4px; padding: 3px 9px; }
+  .hero         { height: 200px; }
+  .hero-content { max-width: 64%; padding: 0 12px; }
+  .hero-badge   { font-size: 8px; padding: 3px 9px; }
   .logo-side img { height: 33px; }
   .header-inner  { padding: 6px 10px; min-height: 46px; }
   .tarif-row     { display: grid; grid-template-columns: 1fr 1fr; }
@@ -457,7 +464,9 @@ body {
 
   <div class="hero">
     <div class="hero-office" id="ho"></div>
-    <div class="hero-person" id="hp"></div>
+    <img class="hero-person" id="hp" src="assets/hero.png" alt=""
+         onerror="this.style.display='none'">
+    <div class="hero-overlay"></div>
     <div class="hero-content">
       <span class="hero-badge">PORTAL KALKULATOR JAMINAN</span>
       <div class="hero-title">Kalkulator <span class="hl">Jaminan</span></div>
@@ -694,14 +703,22 @@ function setInfoPanel(){
 }
 
 function tryLoadHero(){
-  const chk = (src, el) => {
-    const i = new Image();
-    i.onload  = () => { document.getElementById(el).classList.add("vis"); };
-    i.onerror = () => {};
-    i.src = src;
-  };
-  chk("assets/kantor.png","ho");
-  chk("assets/hero.png","hp");
+  // Kantor: tetap pakai CSS background → cek via Image()
+  const offImg = new Image();
+  offImg.onload  = () => document.getElementById("ho").classList.add("vis");
+  offImg.onerror = () => {};
+  offImg.src = "assets/kantor.png";
+
+  // Person: sekarang <img> tag → handle load/error langsung dari elemen
+  const hp = document.getElementById("hp");
+  if (!hp) return;
+  const showPerson = () => hp.classList.add("vis");
+  if (hp.complete && hp.naturalWidth > 0) {
+    showPerson();           // sudah cached/loaded
+  } else {
+    hp.addEventListener("load",  showPerson);
+    hp.addEventListener("error", () => { hp.style.display = "none"; });
+  }
 }
 
 function buildGrid(){
