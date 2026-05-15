@@ -438,51 +438,54 @@ button { cursor: pointer; font-family: var(--sans); }
   .header-inner  { padding: 8px 12px; min-height: 54px; }
   .logo-side img { height: 38px; }
 
-  /* Hero */
-  .hero { height: 220px; }
+  /* ── HERO MOBILE: layout vertikal (teks atas, foto bawah) ──
+   *
+   * Problem: foto group landscape tidak bisa fit di panel kanan
+   *          layar sempit tanpa crop → selalu ada orang yang terpotong
+   *
+   * Solusi: ubah orientasi hero di mobile
+   *   • Foto orang: width:100% + height:100% + object-fit:contain
+   *     → foto scale proporsional mengisi lebar layar penuh
+   *     → semua orang PASTI terlihat, tidak pernah crop
+   *     → object-position:center bottom → foto duduk di bawah
+   *   • Overlay: gradient atas→bawah (bukan kiri→kanan)
+   *     → bagian atas gelap = area teks terbaca
+   *     → bagian bawah transparan = foto orang terlihat jelas
+   *   • Teks: justify ke atas (top), bukan tengah
+   * ─────────────────────────────────────────────────────── */
+  .hero { height: 250px; }
 
-  /* Kantor: sangat subtle agar latar tidak ramai */
-  .hero-kantor.vis { opacity: 0.2; }
+  /* Kantor: sangat subtle */
+  .hero-kantor.vis { opacity: 0.15; }
 
-  /*
-   * FOTO ORANG — fix untuk foto group landscape di layar sempit:
-   *
-   * Problem: height:100% + width:auto → foto landscape jadi sangat lebar
-   *          (misal 215px tinggi = 430-600px lebar) → overflow ke area teks
-   *
-   * Solusi: beri LEBAR EKSPLISIT 52% pada mobile
-   *   - height: 100% + width: 52% + object-fit: cover
-   *   → foto mengisi panel kanan 52% secara penuh
-   *   - object-position: right top
-   *   → kepala orang selalu terlihat (atas), orang paling kanan (sisi kanan)
-   *   → area teks kiri 48% bebas dari foto
-   *
-   * Ini adalah teknik standar untuk hero foto group di mobile.
-   */
+  /* Foto orang: full width, contain, posisi bawah */
   .hero-orang {
+    width: 100%;
     height: 100%;
-    width: 52%;
-    object-fit: cover;
-    object-position: right top;
+    object-fit: contain;
+    object-position: center bottom;
   }
 
-  /* Overlay: kuat di kiri, fade di tengah, bersih di kanan */
+  /* Overlay: gradient ATAS ke BAWAH
+     → atas gelap (teks terbaca), bawah transparan (foto terlihat) */
   .hero-overlay {
     background: linear-gradient(
-      to right,
+      to bottom,
       rgba(10,22,40,1)    0%,
-      rgba(13,27,62,.98) 28%,
-      rgba(13,27,62,.75) 46%,
-      rgba(13,27,62,.1)  60%,
-      transparent        70%
+      rgba(13,27,62,.95) 32%,
+      rgba(13,27,62,.55) 52%,
+      rgba(13,27,62,.1)  68%,
+      transparent        80%
     );
   }
 
-  /* Teks di kiri 50% yang bersih */
+  /* Teks: full width, rata atas */
   .hero-content {
-    max-width: 52%;
-    padding: 0 14px;
+    max-width: 100%;
+    padding: 18px 18px 0;
+    justify-content: flex-start;
   }
+  .hero-sub2 { display: none; } /* singkirkan subtitle terpanjang agar rapi */
 
   /* Footer */
   .footer-inner { flex-direction: column; gap: 8px; }
@@ -506,10 +509,10 @@ button { cursor: pointer; font-family: var(--sans); }
 
 /* ── Mobile kecil (≤ 400px) ── */
 @media (max-width: 400px) {
-  .hero          { height: 205px; }
-  .hero-orang    { width: 56%; }
-  .hero-content  { max-width: 50%; padding: 0 12px; }
-  .hero-badge    { font-size: 8px; padding: 3px 10px; }
+  .hero          { height: 230px; }
+  .hero-content  { padding: 14px 14px 0; }
+  .hero-badge    { font-size: 8px; padding: 3px 10px; margin-bottom: 8px; }
+  .hero-title    { font-size: 20px; }
   .logo-side img { height: 33px; }
   .header-inner  { padding: 6px 10px; min-height: 48px; }
   .tarif-row     { display: grid; grid-template-columns: 1fr 1fr; }
