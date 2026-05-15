@@ -438,27 +438,13 @@ button { cursor: pointer; font-family: var(--sans); }
   .header-inner  { padding: 8px 12px; min-height: 54px; }
   .logo-side img { height: 38px; }
 
-  /* ── HERO MOBILE: layout vertikal (teks atas, foto bawah) ──
-   *
-   * Problem: foto group landscape tidak bisa fit di panel kanan
-   *          layar sempit tanpa crop → selalu ada orang yang terpotong
-   *
-   * Solusi: ubah orientasi hero di mobile
-   *   • Foto orang: width:100% + height:100% + object-fit:contain
-   *     → foto scale proporsional mengisi lebar layar penuh
-   *     → semua orang PASTI terlihat, tidak pernah crop
-   *     → object-position:center bottom → foto duduk di bawah
-   *   • Overlay: gradient atas→bawah (bukan kiri→kanan)
-   *     → bagian atas gelap = area teks terbaca
-   *     → bagian bawah transparan = foto orang terlihat jelas
-   *   • Teks: justify ke atas (top), bukan tengah
-   * ─────────────────────────────────────────────────────── */
-  .hero { height: 250px; }
+  /* Hero */
+  .hero { height: 270px; }
 
   /* Kantor: sangat subtle */
   .hero-kantor.vis { opacity: 0.15; }
 
-  /* Foto orang: full width, contain, posisi bawah */
+  /* Foto orang: full width, contain, posisi bawah → muka di zona transparan */
   .hero-orang {
     width: 100%;
     height: 100%;
@@ -466,26 +452,29 @@ button { cursor: pointer; font-family: var(--sans); }
     object-position: center bottom;
   }
 
-  /* Overlay: gradient ATAS ke BAWAH
-     → atas gelap (teks terbaca), bawah transparan (foto terlihat) */
+  /* Overlay atas→bawah, fade CEPAT agar muka terlihat:
+     - 0–22%  : solid navy  → area teks terbaca (~0–60px)
+     - 22–44% : gradient    → transisi
+     - 44%+   : transparan  → foto orang & muka jelas terlihat */
   .hero-overlay {
     background: linear-gradient(
       to bottom,
       rgba(10,22,40,1)    0%,
-      rgba(13,27,62,.95) 32%,
-      rgba(13,27,62,.55) 52%,
-      rgba(13,27,62,.1)  68%,
-      transparent        80%
+      rgba(13,27,62,.93) 22%,
+      rgba(13,27,62,.15) 44%,
+      transparent        56%
     );
   }
 
-  /* Teks: full width, rata atas */
+  /* Teks: TENGAH, rata atas */
   .hero-content {
     max-width: 100%;
-    padding: 18px 18px 0;
+    padding: 18px 20px 0;
     justify-content: flex-start;
+    align-items: center;
+    text-align: center;
   }
-  .hero-sub2 { display: none; } /* singkirkan subtitle terpanjang agar rapi */
+  .hero-badge { margin-left: auto; margin-right: auto; }
 
   /* Footer */
   .footer-inner { flex-direction: column; gap: 8px; }
@@ -509,8 +498,8 @@ button { cursor: pointer; font-family: var(--sans); }
 
 /* ── Mobile kecil (≤ 400px) ── */
 @media (max-width: 400px) {
-  .hero          { height: 230px; }
-  .hero-content  { padding: 14px 14px 0; }
+  .hero          { height: 250px; }
+  .hero-content  { padding: 14px 16px 0; }
   .hero-badge    { font-size: 8px; padding: 3px 10px; margin-bottom: 8px; }
   .hero-title    { font-size: 20px; }
   .logo-side img { height: 33px; }
