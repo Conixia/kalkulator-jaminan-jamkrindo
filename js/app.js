@@ -133,9 +133,13 @@ function fillInfoPanel() {
    orang:  <img> tag     → listen ke event load/error pada elemen
 */
 function initHero() {
-  // Kantor
+  // Kantor: set background-image via JS agar path selalu relatif ke index.html
+  const hoEl = el("ho");
   const kantor = new Image();
-  kantor.onload  = () => el("ho").classList.add("vis");
+  kantor.onload = () => {
+    hoEl.style.backgroundImage = `url('assets/kantor.png')`;
+    hoEl.classList.add("vis");
+  };
   kantor.onerror = () => {};
   kantor.src = "assets/kantor.png";
 
