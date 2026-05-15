@@ -147,33 +147,21 @@ button { cursor: pointer; font-family: var(--sans); }
 /* Layer 1 — Foto kantor (decorative, center-fade) */
 .hero-kantor {
   position: absolute; inset: 0;
-  /* background-image diset oleh JS di initHero() — path relatif ke index.html */
-  /* 100% auto = scale by WIDTH (sama persis logika Python app)
-     → foto kantor mengisi penuh lebar hero, tidak ada strip/patah
-     → tinggi otomatis proporsional, center-crop vertikal jika perlu */
+  /*
+   * PYTHON APP behavior (replicated exactly):
+   *   scale = W / kantor.width        → background-size: 100% auto
+   *   paste at (x=0, y=center)        → background-position: left center
+   *   tidak ada mask pada kantor itu sendiri — fade dihandle overlay di atasnya
+   */
   background-size: 100% auto;
-  background-position: center center;
+  background-position: left center;
   background-repeat: no-repeat;
   opacity: 0;
   transition: opacity .5s ease;
-  /* Fade in dari kiri & kanan → hanya tampil di tengah */
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent      8%,
-    rgba(0,0,0,.45) 28%,
-    rgba(0,0,0,.45) 62%,
-    transparent      82%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent      8%,
-    rgba(0,0,0,.45) 28%,
-    rgba(0,0,0,.45) 62%,
-    transparent      82%
-  );
+  /* Tidak ada mask — Python tidak pakai mask pada layer kantor.
+     Hero-overlay (gradient navy kiri→kanan) yang handle keterbacaan teks */
 }
-/* Desktop: kantor subtle (0.5), tidak terlalu dominan */
-.hero-kantor.vis { opacity: 0.75; }   /* desktop: lebih terang, sesuai referensi */
+.hero-kantor.vis { opacity: 0.85; }
 
 /* Layer 2 — Foto orang: <img> tag (BUKAN background-image)
    ─────────────────────────────────────────────────────────
@@ -208,13 +196,14 @@ button { cursor: pointer; font-family: var(--sans); }
 */
 .hero-overlay {
   position: absolute; inset: 0; z-index: 1;
+  /* Python app: overlay gelap hanya di area teks kiri,
+     gedung di bagian tengah-kanan terlihat jelas */
   background: linear-gradient(
     to right,
-    rgba(10,22,40,1)    0%,
-    rgba(13,27,62,.96) 24%,
-    rgba(13,27,62,.75) 44%,
-    rgba(13,27,62,.2)  60%,
-    transparent        72%
+    rgba(10,22,40,.85)  0%,
+    rgba(13,27,62,.65) 22%,
+    rgba(13,27,62,.2)  44%,
+    transparent        60%
   );
   pointer-events: none;
 }
