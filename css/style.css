@@ -1,0 +1,500 @@
+/* ════════════════════════════════════════════════════════
+   Kalkulator Jaminan — Danantara × Jamkrindo
+   css/style.css
+   Pendekatan: mobile-first yang benar
+   Hero person: <img> + object-fit:contain (tidak pernah crop)
+════════════════════════════════════════════════════════ */
+
+/* ── TOKENS ── */
+:root {
+  --navy:         #0D1B3E;
+  --navy2:        #183262;
+  --bg:           #F3F3F3;
+  --surface:      #FFFFFF;
+  --border:       #E0E0E0;
+  --border2:      #C8C8C8;
+  --text:         #1A1A1A;
+  --text2:        #5A5A5A;
+  --text3:        #999999;
+  --accent:       #0067C0;
+  --accent-h:     #1677CF;
+  --gold:         #B45309;
+  --teal:         #0D7A6F;
+  --green:        #107C10;
+  --red:          #C42B1C;
+  --warn-bg:      #FFF9E6;
+  --warn-br:      #F0A500;
+  --warn-tx:      #6D4600;
+  --ok-bg:        #F0FBF0;
+  --ok-br:        #57A300;
+  --ok-tx:        #0E5C0E;
+  --err-bg:       #FDF3F2;
+  --err-br:       #F08080;
+  --pill:         #E8E8E8;
+  --btn:          #F5F5F5;
+  --btn-h:        #E8E8E8;
+  --sans:  'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+  --serif: 'Lora', Georgia, serif;
+  --mono:  'JetBrains Mono', 'Consolas', monospace;
+  --r:     4px;
+}
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+}
+img { display: block; max-width: 100%; }
+button { cursor: pointer; font-family: var(--sans); }
+
+/* ── SCREEN ROUTING ── */
+.screen { display: none; flex-direction: column; min-height: 100dvh; }
+.screen.active { display: flex; }
+
+/* ════════════════════════════════
+   SHARED: HEADER
+════════════════════════════════ */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 1px 6px rgba(0,0,0,.06);
+}
+.header-inner {
+  display: flex; align-items: center;
+  padding: 8px 24px; gap: 12px; min-height: 64px;
+}
+.logo-side { display: flex; align-items: center; flex: 1; }
+.logo-side img { height: 50px; width: auto; object-fit: contain; }
+.logo-right { justify-content: flex-end; }
+
+/* Logo fallback badge */
+.lb {
+  display: inline-flex; flex-direction: column; align-items: center;
+  padding: 6px 14px; border-radius: var(--r); color: #fff; line-height: 1.2;
+}
+.lb b    { font-size: 12px; font-weight: 700; letter-spacing: .5px; }
+.lb small { font-size: 7px; opacity: .85; margin-top: 1px; }
+
+.header-sep {
+  font-size: 15px; color: var(--text3);
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+}
+.btn-back {
+  padding: 7px 14px;
+  background: var(--btn); border: 1px solid var(--border); border-radius: var(--r);
+  font-size: 13px; font-weight: 500; color: var(--text);
+  transition: background .12s, border-color .12s;
+  white-space: nowrap;
+}
+.btn-back:hover { background: var(--btn-h); border-color: var(--border2); }
+
+/* ════════════════════════════════
+   SHARED: FOOTER
+════════════════════════════════ */
+.footer {
+  background: #FAFAFA; border-top: 1px solid var(--border);
+  padding: 10px 24px; margin-top: auto; flex-shrink: 0;
+}
+.footer-inner {
+  display: flex; flex-wrap: wrap;
+  justify-content: space-between; align-items: flex-start; gap: 6px;
+}
+.fn { font-size: 9px; font-weight: 700; color: var(--text2); }
+.fa { font-size: 8px; color: var(--text3); margin-top: 2px; }
+.footer-right { text-align: right; }
+.fc { font-size: 8px; color: var(--text2); }
+.fr { font-size: 8px; color: var(--text3); margin-top: 2px; }
+
+/* ════════════════════════════════
+   SHARED: MISC COMPONENTS
+════════════════════════════════ */
+.rule  { height: 1px; background: var(--border); flex-shrink: 0; }
+.rule2 { height: 1px; background: var(--border); margin: 0 0 16px; }
+.btn11 {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px;
+  background: var(--btn); border: 1px solid var(--border); border-radius: var(--r);
+  font-size: 13px; font-weight: 500; color: var(--text);
+  transition: background .12s, border-color .12s; white-space: nowrap;
+}
+.btn11:hover { background: var(--btn-h); border-color: var(--border2); }
+
+/* ════════════════════════════════════════════════════════
+   WELCOME SCREEN — HERO
+
+   Pendekatan yang benar untuk foto group orang:
+   Gunakan <img> dengan height:100% width:auto object-fit:contain
+   Browser menghitung ukuran proporsional secara akurat.
+   Foto SELALU tampil utuh tanpa pernah terpotong,
+   di PC maupun HP, tanpa perlu override per breakpoint.
+════════════════════════════════════════════════════════ */
+.hero {
+  position: relative;
+  overflow: hidden;
+  height: 230px;
+  /* Layer 0: gradient navy — selalu tampil */
+  background: linear-gradient(105deg, #0A1628 0%, #0D1B3E 40%, #183262 70%, #1C3560 100%);
+  flex-shrink: 0;
+}
+
+/* Layer 1 — Foto kantor (decorative, center-fade) */
+.hero-kantor {
+  position: absolute; inset: 0;
+  background: url('../assets/kantor.png') center / cover no-repeat;
+  opacity: 0;
+  transition: opacity .5s ease;
+  /* Fade in dari kiri & kanan → hanya tampil di tengah */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent      8%,
+    rgba(0,0,0,.45) 28%,
+    rgba(0,0,0,.45) 62%,
+    transparent      82%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent      8%,
+    rgba(0,0,0,.45) 28%,
+    rgba(0,0,0,.45) 62%,
+    transparent      82%
+  );
+}
+/* Desktop: kantor subtle (0.5), tidak terlalu dominan */
+.hero-kantor.vis { opacity: 0.5; }
+
+/* Layer 2 — Foto orang: <img> tag (BUKAN background-image)
+   ─────────────────────────────────────────────────────────
+   WHY <img> bukan background-image:
+   • background-image tidak bisa object-fit, hanya background-size
+   • background-size: cover → selalu crop
+   • background-size: contain → bisa ada ruang kosong atau terlalu kecil
+   • background-size: auto 100% → crop jika foto lebih lebar dari panel
+
+   <img> dengan height:100% + width:auto:
+   • Browser menghitung width proporsional dari height (100% hero height)
+   • object-fit:contain memastikan tidak ada pixel yang hilang
+   • Bekerja identik di semua ukuran layar tanpa override tambahan
+   ─────────────────────────────────────────────────────────
+*/
+.hero-orang {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 100%;          /* scale ke tinggi hero */
+  width: auto;           /* lebar otomatis proporsional */
+  object-fit: contain;   /* seluruh foto tampil, tidak pernah crop */
+  object-position: right bottom;
+  opacity: 0;
+  transition: opacity .5s ease;
+}
+.hero-orang.vis { opacity: 1; }
+
+/* Layer 3 — Overlay gradient (div tersendiri, bukan ::before)
+   Karena <img> tidak mendukung pseudo-element ::before/::after
+   Gradient ini melindungi keterbacaan teks di sisi kiri
+*/
+.hero-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(
+    to right,
+    rgba(10,22,40,1)    0%,
+    rgba(13,27,62,.96) 24%,
+    rgba(13,27,62,.75) 44%,
+    rgba(13,27,62,.2)  60%,
+    transparent        72%
+  );
+  pointer-events: none;
+}
+
+/* Layer 4 — Teks */
+.hero-content {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; justify-content: center;
+  height: 100%;
+  padding: 0 clamp(18px, 4%, 44px);
+  max-width: 54%; /* beri ruang untuk foto orang di kanan */
+}
+.hero-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #1A5CB0; color: #fff;
+  font-size: 9px; font-weight: 700; letter-spacing: .9px;
+  border-radius: 2px; margin-bottom: 12px; width: fit-content;
+}
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(20px, 3vw, 30px);
+  font-weight: 700; color: #fff; line-height: 1.12;
+}
+.hero-title .hl { color: #5BAEF0; }
+.hero-sub1 { font-size: clamp(10px, 1.4vw, 13px); color: #C8D8EB; margin-top: 10px; }
+.hero-sub2 { font-size: clamp(9px, 1.1vw, 11px);  color: #7A92A8; margin-top: 4px; }
+
+/* ════════════════════════════════
+   WELCOME SCREEN — PRODUCT GRID
+════════════════════════════════ */
+.grid-wrap { flex: 1; padding: 20px; }
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  max-width: 980px; margin: 0 auto;
+}
+.prod-card {
+  background: var(--surface);
+  border: 1px solid var(--border); border-radius: 6px;
+  overflow: hidden; display: flex; flex-direction: column;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s, border-color .15s;
+}
+.prod-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,.10);
+}
+.prod-strip { height: 4px; flex-shrink: 0; }
+.prod-body  { flex: 1; padding: 18px 20px 14px; }
+.prod-icon  {
+  display: inline-flex; padding: 8px 10px; border-radius: 6px;
+  font-size: 22px; margin-bottom: 12px;
+}
+.prod-name { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+.prod-sub  { font-size: 10px; color: var(--text2); }
+.prod-min  { font-size: 9px;  color: var(--text3); margin-top: 10px; }
+.prod-cta  {
+  display: flex; align-items: center; justify-content: center;
+  padding: 11px; font-size: 12px; font-weight: 700; color: #fff;
+  letter-spacing: .3px; transition: filter .12s;
+}
+.prod-card:hover .prod-cta { filter: brightness(1.08); }
+
+/* ════════════════════════════════
+   CALCULATOR SCREEN
+════════════════════════════════ */
+
+/* Info kontak collapsible */
+.info-panel {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  max-height: 0; overflow: hidden;
+  transition: max-height .28s ease;
+}
+.info-panel.open { max-height: 360px; }
+.info-inner { padding: 16px 24px; max-width: 880px; margin: 0 auto; }
+.info-head { font-size: 8px; font-weight: 700; color: var(--text3); letter-spacing: .8px; margin-bottom: 10px; }
+.info-row  { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+.il        { font-size: 9px; color: var(--text2); min-width: 140px; flex-shrink: 0; }
+.iv        { font-size: 9px; font-weight: 700; }
+.iv.accent { color: var(--accent); }
+.iv.muted  { color: var(--text2); font-weight: 500; }
+
+/* Scroll container */
+.calc-scroll { flex: 1; overflow-y: auto; }
+.calc-body   { max-width: 880px; margin: 0 auto; padding: 26px 24px 36px; }
+
+/* Section header */
+.calc-toprow {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 10px; margin-bottom: 10px;
+}
+.calc-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 12px; border-radius: var(--r);
+  font-size: 9px; font-weight: 700; letter-spacing: .6px;
+}
+.calc-title { font-family: var(--serif); font-size: clamp(20px,3vw,26px); font-weight: 700; color: var(--text); }
+.calc-sub   { font-size: 11px; color: var(--text2); margin-top: 2px; margin-bottom: 22px; }
+
+/* Tariff row */
+.tarif-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.tarif-card {
+  flex: 1 1 auto; min-width: 96px;
+  padding: 10px 14px; border-radius: 5px; border: 1px solid;
+  text-align: center;
+}
+.tarif-j { font-size: 9px; color: var(--text2); margin-bottom: 4px; }
+.tarif-p { font-family: var(--mono); font-size: 14px; font-weight: 700; }
+
+/* Form */
+.sec-lbl {
+  font-size: 8px; font-weight: 700; color: var(--text3);
+  letter-spacing: .7px; display: block; margin-bottom: 6px;
+}
+.form-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px;
+}
+.form-row { margin-bottom: 14px; }
+.form-action { display: flex; align-items: flex-end; }
+.inp-lbl {
+  display: block; font-size: 8px; font-weight: 700;
+  color: var(--text3); letter-spacing: .7px; margin-bottom: 5px;
+}
+.sel-wrap { position: relative; }
+.sel {
+  width: 100%; padding: 9px 32px 9px 12px;
+  background: var(--surface); border: 1px solid #CECECE; border-radius: var(--r);
+  font-family: var(--sans); font-size: 12px; color: var(--text);
+  appearance: none; -webkit-appearance: none; outline: none;
+  transition: border-color .14s, box-shadow .14s;
+}
+.sel:focus { border-color: var(--fc, var(--accent)); box-shadow: 0 0 0 2px color-mix(in srgb, var(--fc, var(--accent)) 18%, transparent); }
+.sel-arr { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; font-size: 11px; color: var(--text2); }
+.inp {
+  width: 100%; padding: 9px 12px;
+  background: var(--surface); border: 1px solid #CECECE; border-radius: var(--r);
+  font-family: var(--mono); font-size: 12px; color: var(--text);
+  outline: none; transition: border-color .14s, box-shadow .14s;
+}
+.inp:focus { border-color: var(--fc, var(--accent)); box-shadow: 0 0 0 2px color-mix(in srgb, var(--fc, var(--accent)) 18%, transparent); }
+.inp::placeholder { color: #AABCCC; font-family: var(--sans); font-size: 11px; }
+.inp-hint { font-family: var(--mono); font-size: 9px; margin-top: 4px; min-height: 14px; }
+.inp-hint.teal { color: var(--teal); }
+.btn-hitung {
+  width: 100%; padding: 10px 16px;
+  background: var(--accent); color: #fff;
+  border: none; border-radius: var(--r);
+  font-size: 13px; font-weight: 600;
+  transition: filter .12s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.btn-hitung:hover  { filter: brightness(1.08); }
+.btn-hitung:active { filter: brightness(.9); }
+
+/* Results */
+.r-box {
+  padding: 20px 24px; border-radius: 6px; border: 2px solid; margin-bottom: 10px;
+}
+.r-lbl    { font-size: 8px; font-weight: 700; letter-spacing: .8px; margin-bottom: 6px; }
+.r-amount { font-family: var(--serif); font-size: clamp(26px,5vw,42px); font-weight: 700; margin-bottom: 12px; }
+.r-pills  { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.pill     { padding: 3px 10px; border-radius: 20px; font-family: var(--mono); font-size: 9px; }
+.f-box    { background: #F5F7FA; border: 1px solid var(--border); border-radius: var(--r); padding: 12px 16px; }
+.fl       { font-family: var(--mono); font-size: 11px; color: var(--text); line-height: 1.65; }
+.fl.bold  { font-weight: 700; margin-top: 4px; }
+.warn-box {
+  background: var(--warn-bg); border: 1px solid var(--warn-br);
+  border-radius: var(--r); padding: 8px 14px; margin-bottom: 8px;
+  font-size: 11px; color: var(--warn-tx); line-height: 1.5;
+}
+.err-box {
+  background: var(--err-bg); border: 1px solid var(--err-br);
+  border-radius: var(--r); padding: 10px 16px;
+  font-size: 12px; font-weight: 700; color: var(--red);
+}
+
+/* History */
+.hist-hdr { display: flex; align-items: center; justify-content: space-between; margin: 16px 0 8px; }
+.hist-ttl { font-size: 8px; font-weight: 700; color: var(--text3); letter-spacing: .7px; }
+.btn-hapus {
+  font-size: 9px; color: var(--text3); background: none; border: none;
+  padding: 2px 6px; transition: color .12s;
+}
+.btn-hapus:hover { color: var(--red); }
+.hist-item {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
+  padding: 10px 16px; display: flex; align-items: center;
+  justify-content: space-between; gap: 12px; margin-bottom: 6px;
+}
+.h-jenis  { font-size: 12px; font-weight: 700; }
+.h-detail { font-family: var(--mono); font-size: 9px; color: var(--text2); margin-top: 2px; }
+.h-amount { font-family: var(--serif); font-size: 16px; font-weight: 700; white-space: nowrap; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: #CCC; border-radius: 3px; }
+
+/* ════════════════════════════════════════════════════════
+   RESPONSIVE
+
+   Prinsip:
+   • Desktop (> 640px): layout seperti di atas
+   • Mobile (≤ 640px):
+     - Hero: kantor opacity dikurangi (tidak ramai)
+     - Hero orang: <img> auto-scale, tidak butuh override
+     - Overlay gradient: lebih kuat di kiri
+     - Grid: 1 kolom
+     - Form: 1 kolom
+════════════════════════════════════════════════════════ */
+
+/* ── Tablet (≤ 768px) ── */
+@media (max-width: 768px) {
+  .logo-side img { height: 44px; }
+  .header-inner  { padding: 8px 16px; }
+  .footer        { padding: 10px 16px; }
+}
+
+/* ── Mobile (≤ 640px) ── */
+@media (max-width: 640px) {
+
+  /* Header */
+  .header-inner  { padding: 8px 12px; min-height: 54px; }
+  .logo-side img { height: 38px; }
+
+  /* ── HERO MOBILE ──────────────────────────────────
+     .hero-orang adalah <img height:100% width:auto>
+     Foto group otomatis scale ke tinggi hero (215px)
+     width=auto → browser hitung proporsional
+     Semua orang terlihat tanpa crop. TIDAK PERLU override.
+
+     Yang perlu disesuaikan:
+     1. Tinggi hero sedikit dikurangi (215px)
+     2. Kantor: opacity 0.2 → latar tidak ramai
+     3. Overlay: lebih kuat di kiri → teks bersih
+     4. hero-content: max-width lebih lebar (foto orang
+        proporsional lebih kecil di layar sempit)
+  ─────────────────────────────────────────────────── */
+  .hero { height: 215px; }
+
+  .hero-kantor.vis { opacity: 0.2; }
+
+  .hero-overlay {
+    background: linear-gradient(
+      to right,
+      rgba(10,22,40,1)    0%,
+      rgba(13,27,62,.98) 30%,
+      rgba(13,27,62,.82) 50%,
+      rgba(13,27,62,.3)  65%,
+      transparent        76%
+    );
+  }
+
+  .hero-content {
+    max-width: 68%;
+    padding: 0 16px;
+  }
+
+  /* Footer */
+  .footer-inner { flex-direction: column; gap: 8px; }
+  .footer-right { text-align: left; }
+  .footer       { padding: 10px 12px; }
+
+  /* Product grid: 1 kolom */
+  .product-grid { grid-template-columns: 1fr; gap: 10px; }
+  .grid-wrap    { padding: 14px 12px; }
+
+  /* Kalkulator */
+  .calc-body  { padding: 16px 14px 28px; }
+  .form-grid  { grid-template-columns: 1fr; }
+  .tarif-row  { gap: 6px; }
+  .tarif-card { min-width: 80px; }
+
+  /* Info panel */
+  .info-inner { padding: 14px 12px; }
+  .il { min-width: 120px; }
+}
+
+/* ── Mobile kecil (≤ 400px) ── */
+@media (max-width: 400px) {
+  .hero         { height: 200px; }
+  .hero-content { max-width: 72%; padding: 0 12px; }
+  .hero-badge   { font-size: 8px; padding: 3px 10px; }
+  .logo-side img { height: 33px; }
+  .header-inner  { padding: 6px 10px; min-height: 48px; }
+  .tarif-row     { display: grid; grid-template-columns: 1fr 1fr; }
+  .tarif-card    { min-width: unset; }
+}
