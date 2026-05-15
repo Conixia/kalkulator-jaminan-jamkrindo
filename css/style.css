@@ -147,7 +147,7 @@ button { cursor: pointer; font-family: var(--sans); }
 /* Layer 1 — Foto kantor (decorative, center-fade) */
 .hero-kantor {
   position: absolute; inset: 0;
-  background-size: 100% auto;
+  background-size: 80% auto;
   background-position: center center;
   background-repeat: no-repeat;
   opacity: 0;
