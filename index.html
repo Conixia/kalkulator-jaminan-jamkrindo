@@ -6,9 +6,11 @@
 <title>Kalkulator Jaminan — Danantara × Jamkrindo</title>
 <link rel="icon" type="image/png" href="assets/favicon.png">
 
-<!-- Preload aset kritis: browser download sebelum JS/CSS selesai -->
-<link rel="preload" href="assets/hero.webp"  as="image" type="image/webp" fetchpriority="high">
-<link rel="preload" href="assets/kantor.png" as="image" fetchpriority="low">
+<!-- Preload semua aset kritis — browser download bersamaan, tidak ada yang nungguin -->
+<link rel="preload" href="assets/hero.webp"         as="image" type="image/webp" fetchpriority="high">
+<link rel="preload" href="assets/kantor.png"         as="image" fetchpriority="high">
+<link rel="preload" href="assets/logo_danantara.png" as="image" fetchpriority="high">
+<link rel="preload" href="assets/logo_jamkrindo.png" as="image" fetchpriority="high">
 
 <!-- Fonts: synchronous agar tidak ada kedipan layout (FOUT) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
