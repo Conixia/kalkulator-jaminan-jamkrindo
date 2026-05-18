@@ -5,10 +5,10 @@
 
 const CONTACT = {
   persons: [
-    { name: "Nama Contact Person 1", telp: "0812-XXXX-XXXX" },
-    { name: "Nama Contact Person 2", telp: "0813-XXXX-XXXX" },
-    { name: "Nama Contact Person 3", telp: "0814-XXXX-XXXX" },
-    { name: "Nama Contact Person 4", telp: "0815-XXXX-XXXX" },
+    { name: "Wahyu Nurtikasari", telp: "0812-XXXX-XXXX" },
+    { name: "M Bustomi Rida", telp: "0813-XXXX-XXXX" },
+    { name: "Ghaniy A H Kurniawan", telp: "0814-XXXX-XXXX" },
+    { name: "Agnirahesa", telp: "0815-XXXX-XXXX" },
   ],
   bank:     "BRI",
   rekening: "XXXX-XXXX-XXXX",
