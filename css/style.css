@@ -150,10 +150,9 @@ button { cursor: pointer; font-family: var(--sans); }
   background-size: 70% auto;
   background-position: center center;
   background-repeat: no-repeat;
-  opacity: 0;
-  transition: opacity .2s ease;
-  /* Fade kiri & kanan: gedung tampil jelas di tengah,
-     memudar ke arah teks (kiri) dan foto orang (kanan) */
+  /* Tampil langsung tanpa tunggu JS — CSS animation mulai otomatis */
+  animation: heroFade 0.3s ease both;
+  opacity: 0.85;
   -webkit-mask-image: linear-gradient(
     to right,
     transparent      5%,
@@ -169,34 +168,23 @@ button { cursor: pointer; font-family: var(--sans); }
     transparent      80%
   );
 }
-.hero-kantor.vis { opacity: 0.85; }
 
-/* Layer 2 — Foto orang: <img> tag (BUKAN background-image)
-   ─────────────────────────────────────────────────────────
-   WHY <img> bukan background-image:
-   • background-image tidak bisa object-fit, hanya background-size
-   • background-size: cover → selalu crop
-   • background-size: contain → bisa ada ruang kosong atau terlalu kecil
-   • background-size: auto 100% → crop jika foto lebih lebar dari panel
-
-   <img> dengan height:100% + width:auto:
-   • Browser menghitung width proporsional dari height (100% hero height)
-   • object-fit:contain memastikan tidak ada pixel yang hilang
-   • Bekerja identik di semua ukuran layar tanpa override tambahan
-   ─────────────────────────────────────────────────────────
-*/
 .hero-orang {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  height: 100%;          /* scale ke tinggi hero */
-  width: auto;           /* lebar otomatis proporsional */
-  object-fit: contain;   /* seluruh foto tampil, tidak pernah crop */
+  right: 0; bottom: 0;
+  height: 100%; width: auto;
+  object-fit: contain;
   object-position: right bottom;
-  opacity: 0;
-  transition: opacity .2s ease;
+  /* Tampil langsung tanpa tunggu JS — CSS animation mulai otomatis */
+  animation: heroFade 0.25s ease both;
+  display: block;
 }
-.hero-orang.vis { opacity: 1; }
+
+/* Fade-in otomatis via CSS — tidak butuh JS sama sekali */
+@keyframes heroFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
 
 /* Layer 3 — Overlay gradient (div tersendiri, bukan ::before)
    Karena <img> tidak mendukung pseudo-element ::before/::after
@@ -485,8 +473,8 @@ button { cursor: pointer; font-family: var(--sans); }
   .hero-kantor {
     background-size: cover;
     background-position: center center;
+    opacity: 0.15; /* override animation final value */
   }
-  .hero-kantor.vis { opacity: 0.15; }
 
   /* Foto orang: mulai TEPAT DI BAWAH teks (bukan dari atas hero)
      top:46% → foto dimulai ~124px dari atas (di bawah semua teks)
