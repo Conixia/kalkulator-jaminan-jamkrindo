@@ -5,9 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kalkulator Jaminan — Danantara × Jamkrindo</title>
 <link rel="icon" type="image/png" href="assets/favicon.png">
+
+<!--
+  PERFORMANCE: preload aset kritis
+  Browser mulai download SEBELUM HTML selesai diparse,
+  jauh lebih awal dari biasanya (yg baru mulai saat JS jalan)
+-->
+<link rel="preload" href="assets/hero.png"   as="image" fetchpriority="high">
+<link rel="preload" href="assets/kantor.png" as="image" fetchpriority="low">
+<link rel="preload" href="css/style.css"     as="style">
+
+<!-- Google Fonts: async (tidak blokir render halaman) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="preload"
+  href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+  as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</noscript>
+
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -42,7 +59,8 @@
   <section class="hero" aria-label="Hero banner">
     <div  class="hero-kantor"  id="ho" aria-hidden="true"></div>
     <img  class="hero-orang"   id="hp" src="assets/hero.png" alt=""
-          onerror="this.style.display='none'" loading="eager">
+          fetchpriority="high" loading="eager"
+          onerror="this.style.display='none'">
     <div  class="hero-overlay" aria-hidden="true"></div>
     <div  class="hero-content">
       <span class="hero-badge">PORTAL KALKULATOR JAMINAN</span>
