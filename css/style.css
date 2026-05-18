@@ -405,7 +405,24 @@ button { cursor: pointer; font-family: var(--sans); }
 .h-detail { font-family: var(--mono); font-size: 9px; color: var(--text2); margin-top: 2px; }
 .h-amount { font-family: var(--serif); font-size: 16px; font-weight: 700; white-space: nowrap; }
 
-/* Scrollbar */
+/* Info panel — 4 contact persons */
+.info-panel.open { max-height: 420px; }
+.cp-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; margin-bottom: 4px;
+}
+.cp-card {
+  background: var(--card2); border: 1px solid var(--border);
+  border-radius: 4px; padding: 8px 12px;
+}
+.cp-num  { font-size: 8px; font-weight: 700; color: var(--text3); letter-spacing: .6px; margin-bottom: 3px; }
+.cp-name { font-size: 11px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.cp-telp { font-size: 10px; color: var(--accent); font-weight: 600; }
+.info-sep { height: 1px; background: var(--border); margin: 10px 0; }
+
+@media (max-width: 480px) {
+  .cp-grid { grid-template-columns: 1fr; }
+}
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-thumb { background: #CCC; border-radius: 3px; }
 
