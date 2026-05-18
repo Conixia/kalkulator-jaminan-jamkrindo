@@ -121,6 +121,16 @@
       <div class="rule2"></div>
 
       <div class="form-grid">
+        <!-- Program (hanya tampil untuk produk KBG) -->
+        <div class="form-row" id="row-program" style="display:none">
+          <label class="inp-lbl">PROGRAM</label>
+          <div class="sel-wrap">
+            <select class="sel" id="iprogram" onchange="onProgramChange()">
+              <option value="">-- Pilih Program --</option>
+            </select>
+            <span class="sel-arr">▾</span>
+          </div>
+        </div>
         <div class="form-row">
           <label class="inp-lbl">JENIS JAMINAN</label>
           <div class="sel-wrap">
@@ -138,7 +148,7 @@
           <p class="inp-hint teal" id="hnilai"></p>
         </div>
         <div class="form-row">
-          <label class="inp-lbl">JANGKA WAKTU (HARI)</label>
+          <label class="inp-lbl" id="lbl-jw">JANGKA WAKTU (HARI)</label>
           <input class="inp" id="ijw" type="text"
                  placeholder="Contoh: 90"
                  oninput="onLive()" inputmode="numeric">
