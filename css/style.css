@@ -477,7 +477,7 @@ button { cursor: pointer; font-family: var(--sans); }
      object-fit:contain + object-position:center top
        → tampilkan bagian atas foto (muka) duluan, tidak terpotong */
   .hero-orang {
-    top: 38%;
+    top: 33%;
     bottom: 0;
     left: 0;
     right: 0;
