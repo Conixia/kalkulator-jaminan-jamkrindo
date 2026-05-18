@@ -175,14 +175,14 @@ function fillInfoPanel(){
   c.innerHTML=html;
 }
 function initHero(){
-  const hoEl=el("ho");
-  const k=new Image();
-  k.onload=()=>{ hoEl.style.backgroundImage=`url('assets/kantor.png')`; hoEl.classList.add("vis"); };
-  k.onerror=()=>{}; k.src="assets/kantor.png";
-  const hp=el("hp"); if(!hp) return;
-  const show=()=>hp.classList.add("vis");
-  if(hp.complete&&hp.naturalWidth>0) show();
-  else { hp.addEventListener("load",show); hp.addEventListener("error",()=>{ hp.style.display="none"; }); }
+  /* Kantor: set background LANGSUNG — browser tampilkan saat siap,
+     CSS animation handle fade-in otomatis */
+  const ho = el("ho");
+  if (ho) ho.style.backgroundImage = "url('assets/kantor.png')";
+
+  /* Hero orang: CSS animation sudah handle, hanya perlu error handler */
+  const hp = el("hp");
+  if (hp) hp.addEventListener("error", () => { hp.style.display = "none"; });
 }
 
 /* ── PRODUCT GRID ── */
