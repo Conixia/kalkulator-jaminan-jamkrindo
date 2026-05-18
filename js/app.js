@@ -95,12 +95,28 @@ const PRODUCTS = [
     },
   },
 
-  /* 4 — KBG BRI (tarif menyusul) */
+  /* 4 — KBG BRI (1 set tarif, SP2D 0,5%/3bln) */
   {
     id:"kbg_bri", name:"Kontra Bank Garansi BRI",
     subtitle:"Penjaminan atas Bank Garansi BRI",
     icon:"💳", color:"#15803D", colorBg:"#F0FDF4",
-    type:"coming_soon",
+    type:"kbg_tenor",
+    programs:{
+      "BRI":{
+        label:"Tarif KBG BRI",
+        minimum:100000,      /* IJP Minimal Rp 100.000 */
+        biaya_admin:50000,   /* Rp 50.000/BG */
+        biaya_materai:10000, /* Rp 10.000 */
+        /* SP2D: rumus khusus 0,5% × ceil(tenor/3) */
+        sp2d_rate_per_3m: 0.005,
+        jenis:{
+          "Penawaran":    {"0-3":0.0030,">3-6":0.0030,">6-9":0.0030,">9-12":0.0040},
+          "Pelaksanaan":  {"0-3":0.0050,">3-6":0.0080,">6-9":0.0100,">9-12":0.0140},
+          "Pemeliharaan": {"0-3":0.0050,">3-6":0.0080,">6-9":0.0100,">9-12":0.0140},
+          "Uang Muka":    {"0-3":0.0060,">3-6":0.00875,">6-9":0.0120,">9-12":0.0150},
+        },
+      },
+    },
   },
 ];
 
