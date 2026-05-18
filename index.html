@@ -3,27 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kalkulator Jaminan Jamkrindo Purwokerto</title>
+<title>Kalkulator Jaminan — Danantara × Jamkrindo</title>
 <link rel="icon" type="image/png" href="assets/favicon.png">
 
-<!--
-  PERFORMANCE: preload aset kritis
-  Browser mulai download SEBELUM HTML selesai diparse,
-  jauh lebih awal dari biasanya (yg baru mulai saat JS jalan)
--->
-<link rel="preload" href="assets/hero.png"   as="image" fetchpriority="high">
+<!-- Preload aset kritis: browser download sebelum JS/CSS selesai -->
+<link rel="preload" href="assets/hero.webp"  as="image" type="image/webp" fetchpriority="high">
 <link rel="preload" href="assets/kantor.png" as="image" fetchpriority="low">
-<link rel="preload" href="css/style.css"     as="style">
 
-<!-- Google Fonts: async (tidak blokir render halaman) -->
+<!-- Fonts: synchronous agar tidak ada kedipan layout (FOUT) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload"
-  href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
-  as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-</noscript>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -48,24 +38,20 @@
     </div>
   </header>
 
-  <!-- HERO
-       Struktur 4 layer (industry standard):
-       [0] gradient navy (CSS background)
-       [1] kantor - div CSS bg, decorative
-       [2] orang  - <img> tag, object-fit:contain → tidak pernah crop
-       [3] overlay - div gradient, area teks bersih
-       [4] content - teks
-  -->
   <section class="hero" aria-label="Hero banner">
-    <div  class="hero-kantor"  id="ho" aria-hidden="true"></div>
-    <img  class="hero-orang"   id="hp" src="assets/hero.png" alt=""
-          fetchpriority="high" loading="eager"
-          onerror="this.style.display='none'">
-    <div  class="hero-overlay" aria-hidden="true"></div>
-    <div  class="hero-content">
+    <div class="hero-kantor" id="ho" aria-hidden="true"></div>
+    <!-- picture: browser pilih WebP (280KB) atau PNG (2.4MB) otomatis -->
+    <picture>
+      <source type="image/webp" srcset="assets/hero.webp">
+      <img class="hero-orang" id="hp" src="assets/hero.png" alt=""
+           fetchpriority="high" loading="eager"
+           onerror="this.style.display='none'">
+    </picture>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="hero-content">
       <span class="hero-badge">PORTAL KALKULATOR JAMINAN</span>
       <h1   class="hero-title">Kalkulator <span class="hl">Jaminan</span></h1>
-      <p    class="hero-sub1">Jamkrindo Cabang Purwokerto</p>
+      <p    class="hero-sub1">Kalkulator Jamkrindo Cabang Purwokerto</p>
       <p    class="hero-sub2">Pilih produk jaminan yang ingin Anda hitung</p>
     </div>
   </section>
@@ -106,7 +92,6 @@
     </div>
   </header>
 
-  <!-- Info kontak collapsible — diisi dinamis oleh JS (4 CP) -->
   <div class="info-panel" id="ipanel">
     <div class="info-inner">
       <p class="info-head">INFO KONTAK &amp; REKENING</p>
@@ -130,7 +115,6 @@
       <div class="rule2"></div>
 
       <div class="form-grid">
-        <!-- Program (hanya tampil untuk produk KBG) -->
         <div class="form-row" id="row-program" style="display:none">
           <label class="inp-lbl">PROGRAM</label>
           <div class="sel-wrap">
