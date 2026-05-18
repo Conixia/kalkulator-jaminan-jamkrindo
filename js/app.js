@@ -4,8 +4,12 @@
 ════════════════════════════════════════════════════════ */
 
 const CONTACT = {
-  pic_name: "Nama Contact Person",
-  pic_telp: "0812-XXXX-XXXX",
+  persons: [
+    { name: "Nama Contact Person 1", telp: "0812-XXXX-XXXX" },
+    { name: "Nama Contact Person 2", telp: "0813-XXXX-XXXX" },
+    { name: "Nama Contact Person 3", telp: "0814-XXXX-XXXX" },
+    { name: "Nama Contact Person 4", telp: "0815-XXXX-XXXX" },
+  ],
   bank:     "BRI",
   rekening: "XXXX-XXXX-XXXX",
   an:       "PT Jaminan Kredit Indonesia Cabang Purwokerto",
@@ -140,17 +144,35 @@ document.addEventListener("DOMContentLoaded",()=>{
 });
 
 function fillFooters(){
-  const c=`📞\u00a0 ${CONTACT.pic_name}\u00a0 |\u00a0 ${CONTACT.pic_telp}`;
-  const r=`🏦\u00a0 Bank ${CONTACT.bank}\u00a0 No.\u00a0Rek.\u00a0${CONTACT.rekening}`;
-  const a=`a.n. ${CONTACT.an}`;
-  [["fc1","fc2","fc3"],["fc4","fc5","fc6"]].forEach(([i1,i2,i3])=>{
-    el(i1).textContent=c; el(i2).textContent=r; el(i3).textContent=a;
-  });
+  /* Footer hanya tampilkan alamat — contact/rekening dipindah ke info panel */
 }
+
 function fillInfoPanel(){
-  el("ip1").textContent=CONTACT.pic_name; el("ip2").textContent=CONTACT.pic_telp;
-  el("ip3").textContent=CONTACT.bank;     el("ip4").textContent=CONTACT.rekening;
-  el("ip5").textContent=CONTACT.an;
+  const c=el("info-content");
+  if(!c) return;
+
+  /* 4 Contact Persons dalam grid 2 kolom */
+  let html=`<div class="cp-grid">`;
+  CONTACT.persons.forEach((p,i)=>{
+    html+=`
+      <div class="cp-card">
+        <div class="cp-num">CP ${i+1}</div>
+        <div class="cp-name">${p.name}</div>
+        <div class="cp-telp">📞 ${p.telp}</div>
+      </div>`;
+  });
+  html+=`</div>`;
+
+  /* Separator */
+  html+=`<div class="info-sep"></div>`;
+
+  /* Rekening */
+  html+=`
+    <div class="info-row"><span class="il">🏦 Bank</span><span class="iv">${CONTACT.bank}</span></div>
+    <div class="info-row"><span class="il">💳 No. Rekening</span><span class="iv accent">${CONTACT.rekening}</span></div>
+    <div class="info-row"><span class="il">&nbsp;&nbsp;a.n.</span><span class="iv muted">${CONTACT.an}</span></div>`;
+
+  c.innerHTML=html;
 }
 function initHero(){
   const hoEl=el("ho");
