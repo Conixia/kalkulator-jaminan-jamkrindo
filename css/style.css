@@ -147,7 +147,7 @@ button { cursor: pointer; font-family: var(--sans); }
 /* Layer 1 — Foto kantor (decorative, center-fade) */
 .hero-kantor {
   position: absolute; inset: 0;
-  background-size: 63% auto;
+  background-size: 70% auto;
   background-position: center center;
   background-repeat: no-repeat;
   opacity: 0;
@@ -408,6 +408,30 @@ button { cursor: pointer; font-family: var(--sans); }
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-thumb { background: #CCC; border-radius: 3px; }
+
+/* ── KBG TENOR TABLE ── */
+.kbg-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 11px; font-family: var(--mono);
+}
+.kbg-table th, .kbg-table td {
+  padding: 7px 10px; text-align: center;
+  border: 1px solid var(--border);
+}
+.kbg-table th {
+  background: var(--card2); font-family: var(--sans);
+  font-size: 10px; font-weight: 700; color: var(--text2);
+}
+.kbg-table td:first-child {
+  text-align: left; font-family: var(--sans);
+  font-weight: 600; color: var(--text);
+}
+.kbg-table tr:hover td { background: var(--card2); }
+
+.kbg-info {
+  font-size: 10px; color: var(--text2);
+  padding: 6px 2px;
+}
 
 /* ════════════════════════════════════════════════════════
    RESPONSIVE
