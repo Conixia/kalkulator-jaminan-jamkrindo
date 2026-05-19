@@ -409,6 +409,21 @@ button { cursor: pointer; font-family: var(--sans); }
 .cp-telp { font-size: 10px; color: var(--accent); font-weight: 600; }
 .info-sep { height: 1px; background: var(--border); margin: 10px 0; }
 
+/* Elemen yang bisa diklik untuk salin */
+.copy-btn {
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 5px;
+  transition: opacity .12s;
+}
+.copy-btn:hover { opacity: .75; }
+.copy-btn:active { opacity: .5; }
+.copy-hint {
+  font-size: 8px; font-weight: 600;
+  background: var(--pill); color: var(--text3);
+  padding: 1px 6px; border-radius: 10px;
+  letter-spacing: .3px; white-space: nowrap;
+}
+
 @media (max-width: 480px) {
   .cp-grid { grid-template-columns: 1fr; }
 }
