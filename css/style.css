@@ -73,6 +73,7 @@ button { cursor: pointer; font-family: var(--sans); }
 .logo-side { display: flex; align-items: center; flex: 1; }
 .logo-side img { height: 50px; width: auto; object-fit: contain; }
 .logo-right { justify-content: flex-end; }
+.logo-right img { height: 64px; } /* Jamkrindo lebih tinggi agar tampak sama besar */
 
 /* Logo fallback badge */
 .lb {
@@ -454,6 +455,7 @@ button { cursor: pointer; font-family: var(--sans); }
 /* ── Tablet (≤ 768px) ── */
 @media (max-width: 768px) {
   .logo-side img { height: 44px; }
+  .logo-right img { height: 56px; }
   .header-inner  { padding: 8px 16px; }
   .footer        { padding: 10px 16px; }
 }
@@ -464,6 +466,7 @@ button { cursor: pointer; font-family: var(--sans); }
   /* Header */
   .header-inner  { padding: 8px 12px; min-height: 54px; }
   .logo-side img { height: 38px; }
+  .logo-right img { height: 48px; }
 
   /* Hero */
   .hero { height: 270px; }
@@ -540,6 +543,7 @@ button { cursor: pointer; font-family: var(--sans); }
   .hero-badge    { font-size: 8px; padding: 3px 10px; margin-bottom: 8px; }
   .hero-title    { font-size: 20px; }
   .logo-side img { height: 33px; }
+  .logo-right img { height: 42px; }
   .header-inner  { padding: 6px 10px; min-height: 48px; }
   .tarif-row     { display: grid; grid-template-columns: 1fr 1fr; }
   .tarif-card    { min-width: unset; }
