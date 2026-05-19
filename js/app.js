@@ -148,6 +148,26 @@ function fillFooters(){
   /* Footer hanya tampilkan alamat — contact/rekening dipindah ke info panel */
 }
 
+/* ── COPY TO CLIPBOARD ── */
+function copyText(text, btn) {
+  const done = () => {
+    const orig = btn.innerHTML;
+    btn.innerHTML = "✓ Tersalin!";
+    btn.style.color = "var(--green)";
+    btn.style.fontWeight = "700";
+    setTimeout(() => { btn.innerHTML = orig; btn.style.color = ""; btn.style.fontWeight = ""; }, 1600);
+  };
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(done).catch(() => legacyCopy(text, done));
+  } else { legacyCopy(text, done); }
+}
+function legacyCopy(text, done) {
+  const ta = document.createElement("textarea");
+  ta.value = text; ta.style.cssText = "position:fixed;opacity:0";
+  document.body.appendChild(ta); ta.select();
+  document.execCommand("copy"); document.body.removeChild(ta); done();
+}
+
 function fillInfoPanel(){
   const c=el("info-content");
   if(!c) return;
@@ -159,18 +179,22 @@ function fillInfoPanel(){
       <div class="cp-card">
         <div class="cp-num">CP ${i+1}</div>
         <div class="cp-name">${p.name}</div>
-        <div class="cp-telp">📞 ${p.telp}</div>
+        <div class="cp-telp copy-btn" onclick="copyText('${p.telp}',this)" title="Klik untuk salin">
+          📞 ${p.telp} <span class="copy-hint">salin</span>
+        </div>
       </div>`;
   });
-  html+=`</div>`;
-
-  /* Separator */
-  html+=`<div class="info-sep"></div>`;
+  html+=`</div><div class="info-sep"></div>`;
 
   /* Rekening */
   html+=`
     <div class="info-row"><span class="il">🏦 Bank</span><span class="iv">${CONTACT.bank}</span></div>
-    <div class="info-row"><span class="il">💳 No. Rekening</span><span class="iv accent">${CONTACT.rekening}</span></div>
+    <div class="info-row">
+      <span class="il">💳 No. Rekening</span>
+      <span class="iv accent copy-btn" onclick="copyText('${CONTACT.rekening}',this)" title="Klik untuk salin">
+        ${CONTACT.rekening} <span class="copy-hint">salin</span>
+      </span>
+    </div>
     <div class="info-row"><span class="il">&nbsp;&nbsp;a.n.</span><span class="iv muted">${CONTACT.an}</span></div>`;
 
   c.innerHTML=html;
