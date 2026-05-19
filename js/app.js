@@ -37,6 +37,7 @@ const PRODUCTS = [
     subtitle:"Jaminan Pengadaan Barang & Jasa",
     icon:"🛡️", color:"#0067C0", colorBg:"#EBF3FB",
     type:"surety", minimum:75000, formula:"surety",
+    biaya_admin:20000, biaya_materai:10000,
     tarif:{
       "Penawaran":    [0.00132,"0,132%"],
       "Pelaksanaan":  [0.00212,"0,212%"],
@@ -407,11 +408,13 @@ function hitungSurety(p){
   const isNormal=jw<=90;
   const raw=isNormal?nilai*tarif:nilai*(90/jw)*tarif;
   const isMin=raw<p.minimum;
-  const result=isMin?p.minimum:raw;
+  const ijp=isMin?p.minimum:raw;
+  const total=ijp+(p.biaya_admin||0)+(p.biaya_materai||0);
 
-  hist.unshift({type:"surety",jenis,nilai,jw,tarif,result,raw,isMin,isNormal,time:getNow()});
+  hist.unshift({type:"surety",jenis,nilai,jw,tarif,ijp,raw,isMin,isNormal,
+    biaya_admin:p.biaya_admin||0, biaya_materai:p.biaya_materai||0, total, time:getNow()});
   if(hist.length>10) hist.pop();
-  renderResultSurety(p,jenis,nilai,jw,tarif,raw,result,isMin,isNormal);
+  renderResultSurety(p,jenis,nilai,jw,tarif,raw,ijp,isMin,isNormal,total);
   renderHistory();
 }
 
@@ -457,7 +460,7 @@ function hitungKBG(p){
 }
 
 /* ── RENDER RESULT SURETY ── */
-function renderResultSurety(p,jenis,nilai,jw,tarif,raw,result,isMin,isNormal){
+function renderResultSurety(p,jenis,nilai,jw,tarif,raw,ijp,isMin,isNormal,total){
   const boxBg=isMin?"var(--warn-bg)":"var(--ok-bg)";
   const boxBr=isMin?"var(--warn-br)":"var(--ok-br)";
   const amtClr=isMin?"var(--gold)":"var(--green)";
@@ -468,19 +471,33 @@ function renderResultSurety(p,jenis,nilai,jw,tarif,raw,result,isMin,isNormal){
     <span class="pill" style="background:var(--pill);color:var(--text2)">${jw} hari</span>
     <span class="pill" style="background:var(--pill);color:var(--text2)">${pctFmt(tarif)}</span>
     ${isMin?`<span class="pill" style="background:#FEF3C7;color:var(--gold)">⚠ Min.</span>`:""}`;
+
   let formula=isNormal
     ?`<div class="fl">${fmtRp(nilai)} × ${pctFmt(tarif)}</div>
-      <div class="fl bold" style="color:${amtClr}">= ${fmtRp(raw)}</div>`
+      <div class="fl bold" style="color:${isMin?"var(--gold)":"var(--green)"}">IJP = ${fmtRp(raw)}</div>`
     :`<div class="fl">${fmtRp(nilai)} × (90/${jw}) × ${pctFmt(tarif)}</div>
       <div class="fl">${fmtRp(nilai)} × ${(90/jw).toFixed(6)} × ${pctFmt(tarif)}</div>
-      <div class="fl bold" style="color:${amtClr}">= ${fmtRp(raw)}</div>`;
-  if(isMin) formula+=`<div class="fl bold" style="color:var(--gold);margin-top:6px">Minimum berlaku: ${fmtRp(result)}</div>`;
-  else      formula+=`<div class="fl bold" style="color:var(--green)">= ${fmtRp(result)}</div>`;
-  const warn=isMin?`<div class="warn-box">⚠ Hasil (${fmtRp(raw)}) di bawah minimum → dipakai ${fmtRp(result)}</div>`:"";
+      <div class="fl bold" style="color:${isMin?"var(--gold)":"var(--green)"}">IJP = ${fmtRp(raw)}</div>`;
+
+  if(isMin) formula+=`<div class="fl" style="color:var(--gold)">IJP < minimum → dipakai ${fmtRp(p.minimum)}</div>`;
+
+  /* Biaya tambahan */
+  const admin   = p.biaya_admin   || 0;
+  const materai = p.biaya_materai || 0;
+  if(admin>0||materai>0){
+    formula+=`<div style="height:6px"></div>`;
+    if(admin>0)   formula+=`<div class="fl">+ Biaya Administrasi = ${fmtRp(admin)}</div>`;
+    if(materai>0) formula+=`<div class="fl">+ Biaya Materai &nbsp;&nbsp;&nbsp;= ${fmtRp(materai)}</div>`;
+    formula+=`<div class="fl bold" style="color:var(--green);border-top:1px solid var(--border);margin-top:8px;padding-top:8px">Total = ${fmtRp(total)}</div>`;
+  } else {
+    formula+=`<div class="fl bold" style="color:var(--green)">= ${fmtRp(ijp)}</div>`;
+  }
+
+  const warn=isMin?`<div class="warn-box">⚠ IJP hitung (${fmtRp(raw)}) di bawah minimum → dipakai ${fmtRp(p.minimum)}</div>`:"";
   el("rzone").innerHTML=`
     <div class="r-box" style="background:${boxBg};border-color:${boxBr}">
       <div class="r-lbl" style="color:${lblClr}">HASIL PERHITUNGAN</div>
-      <div class="r-amount" style="color:${amtClr}">${fmtRp(result)}</div>
+      <div class="r-amount" style="color:var(--green)">${fmtRp(total)}</div>
       <div class="r-pills">${pills}</div>
       <div class="f-box">${formula}</div>
     </div>${warn}`;
@@ -541,7 +558,7 @@ function renderHistory(){
     if(h.type==="surety"){
       label=h.jenis;
       detail=`${fmtRp(h.nilai)} | ${h.jw} hari | ${pctFmt(h.tarif)} [${h.time}]`;
-      amount=fmtRp(h.result); color=h.isMin?"var(--gold)":"var(--green)";
+      amount=fmtRp(h.total); color="var(--green)";
     } else {
       label=`${h.prog_label} — ${h.jenis}`;
       detail=`${fmtRp(h.nilai)} | ${h.tenor} bln | ${TENOR_LABELS[h.range]} | ${pctFmt(h.tarif)} [${h.time}]`;
