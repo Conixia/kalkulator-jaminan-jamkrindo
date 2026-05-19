@@ -49,7 +49,7 @@ const PRODUCTS = [
   {
     id:"kbg_mandiri", name:"Kontra Bank Garansi Mandiri",
     subtitle:"Penjaminan atas Bank Garansi Bank Mandiri",
-    icon:"🏦", color:"#D97706", colorBg:"#FFFBEB",
+    icon:"🏦", color:"#C9930A", colorBg:"#FEF9E8",
     type:"kbg_tenor",
     programs:{
       "KBG":{
@@ -78,7 +78,7 @@ const PRODUCTS = [
   {
     id:"kbg_bni", name:"Kontra Bank Garansi BNI",
     subtitle:"Penjaminan atas Bank Garansi BNI",
-    icon:"🏛️", color:"#2563EB", colorBg:"#EFF6FF",
+    icon:"🏛️", color:"#E06010", colorBg:"#FEF0E6",
     type:"kbg_tenor",
     programs:{
       "BNI":{
@@ -103,7 +103,7 @@ const PRODUCTS = [
   {
     id:"kbg_bri", name:"Kontra Bank Garansi BRI",
     subtitle:"Penjaminan atas Bank Garansi BRI",
-    icon:"💳", color:"#15803D", colorBg:"#F0FDF4",
+    icon:"💳", color:"#1A4FA0", colorBg:"#EBF0FB",
     type:"kbg_tenor",
     programs:{
       "BRI":{
