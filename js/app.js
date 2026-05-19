@@ -5,10 +5,10 @@
 
 const CONTACT = {
   persons: [
-    { name: "Wahyu Nurtikasari", telp: "0812-XXXX-XXXX" },
-    { name: "M Bustomi Rida", telp: "0813-XXXX-XXXX" },
-    { name: "Ghaniy A H Kurniawan", telp: "0814-XXXX-XXXX" },
-    { name: "Agnirahesa", telp: "0815-XXXX-XXXX" },
+    { name: "Wahyu Nurtikasari", telp: "0831-0655-0415" },
+    { name: "M Bustomi Rida", telp: "0815-5963-7910" },
+    { name: "Ghaniy A H Kurniawan", telp: "0857-4736-5557" },
+    { name: "Agnirahesa", telp: "0821-3611-7831" },
   ],
   bank:     "BRI",
   rekening: "XXXX-XXXX-XXXX",
