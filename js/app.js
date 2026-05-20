@@ -54,7 +54,7 @@ const PRODUCTS = [
     type:"kbg_tenor",
     programs:{
       "KBG":{
-        label:"Tarif KBG", minimum:150000, biaya_admin:0, biaya_materai:10000,
+        label:"Tarif KBG", minimum:150000, biaya_admin:50000, biaya_materai:10000,
         jenis:{
           "Penawaran":    {"0-3":0.0030,">3-6":0.0060,">6-9":0.0090,">9-12":0.0120},
           "Uang Muka":    {"0-3":0.0060,">3-6":0.0088,">6-9":0.0120,">9-12":0.0150},
