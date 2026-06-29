@@ -430,7 +430,7 @@ function hitungSurety(p){
 
   const [tarif]=p.tarif[jenis];
   const isNormal=jw<=90;
-  const raw=isNormal?nilai*tarif:nilai*(90/jw)*tarif;
+  const raw=isNormal?nilai*tarif:nilai*(jw/90)*tarif;
   const isMin=raw<p.minimum;
   const ijp=isMin?p.minimum:raw;
   const total=ijp+(p.biaya_admin||0)+(p.biaya_materai||0);
@@ -499,8 +499,8 @@ function renderResultSurety(p,jenis,nilai,jw,tarif,raw,ijp,isMin,isNormal,total)
   let formula=isNormal
     ?`<div class="fl">${fmtRp(nilai)} × ${pctFmt(tarif)}</div>
       <div class="fl bold" style="color:${isMin?"var(--gold)":"var(--green)"}">IJP = ${fmtRp(raw)}</div>`
-    :`<div class="fl">${fmtRp(nilai)} × (90/${jw}) × ${pctFmt(tarif)}</div>
-      <div class="fl">${fmtRp(nilai)} × ${(90/jw).toFixed(6)} × ${pctFmt(tarif)}</div>
+    :`<div class="fl">${fmtRp(nilai)} × (${jw}/90) × ${pctFmt(tarif)}</div>
+      <div class="fl">${fmtRp(nilai)} × ${(jw/90).toFixed(6)} × ${pctFmt(tarif)}</div>
       <div class="fl bold" style="color:${isMin?"var(--gold)":"var(--green)"}">IJP = ${fmtRp(raw)}</div>`;
 
   if(isMin) formula+=`<div class="fl" style="color:var(--gold)">IJP < minimum → dipakai ${fmtRp(p.minimum)}</div>`;
