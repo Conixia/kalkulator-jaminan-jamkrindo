@@ -224,8 +224,8 @@ button { cursor: pointer; font-family: var(--sans); }
   font-weight: 700; color: #fff; line-height: 1.12;
 }
 .hero-title .hl { color: #5BAEF0; }
-.hero-sub1 { font-size: clamp(10px, 1.4vw, 13px); color: #C8D8EB; margin-top: 10px; }
-.hero-sub2 { font-size: clamp(9px, 1.1vw, 11px);  color: #7A92A8; margin-top: 4px; }
+.hero-sub1 { font-size: clamp(13px, 1.7vw, 15px); color: #C8D8EB; margin-top: 10px; }
+.hero-sub2 { font-size: clamp(11px, 1.4vw, 13px);  color: #7A92A8; margin-top: 4px; }
 
 /* ════════════════════════════════
    WELCOME SCREEN — PRODUCT GRID
