@@ -107,8 +107,8 @@ button { cursor: pointer; font-family: var(--sans); }
   display: flex; flex-wrap: wrap;
   justify-content: space-between; align-items: flex-start; gap: 6px;
 }
-.fn { font-size: 9px; font-weight: 700; color: var(--text2); }
-.fa { font-size: 8px; color: var(--text3); margin-top: 2px; }
+.fn { font-size: 13px; font-weight: 700; color: var(--text2); }
+.fa { font-size: 12px; color: var(--text3); margin-top: 2px; }
 .footer-right { text-align: right; }
 .fc { font-size: 8px; color: var(--text2); }
 .fr { font-size: 8px; color: var(--text3); margin-top: 2px; }
