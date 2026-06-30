@@ -62,7 +62,8 @@ button { cursor: pointer; font-family: var(--sans); }
    SHARED: HEADER
 ════════════════════════════════ */
 .header {
-  background: var(--surface);
+  background: rgba(255,255,255,.94);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
   position: sticky; top: 0; z-index: 100;
   box-shadow: 0 1px 6px rgba(0,0,0,.06);
@@ -70,7 +71,7 @@ button { cursor: pointer; font-family: var(--sans); }
 .header::after {
   content: ""; position: absolute; left: 0; right: 0; bottom: -3px;
   height: 3px;
-  background: linear-gradient(90deg, var(--navy) 0%, var(--navy2) 45%, var(--blue3) 100%);
+  background: linear-gradient(90deg, var(--navy) 0%, var(--navy2) 40%, var(--blue3) 75%, #5BAEF0 100%);
 }
 .header-inner {
   display: flex; align-items: center;
@@ -146,29 +147,35 @@ button { cursor: pointer; font-family: var(--sans); }
   position: relative;
   overflow: hidden;
   height: 230px;
-  /* Layer 0: gradasi 3 biru Jamkrindo — navy gelap → navy → biru terang,
-     digerakkan perlahan agar lebih eye-catching tanpa mengganggu keterbacaan */
-  background: linear-gradient(120deg,
-    #07101F   0%,
-    var(--navy)  26%,
-    var(--navy2) 52%,
+  /* Layer 0: gradasi 3 biru Jamkrindo, dipertegas & lebih jenuh —
+     bergerak perlahan agar terasa "hidup" tanpa mengganggu keterbacaan */
+  background: linear-gradient(128deg,
+    #050B16   0%,
+    var(--navy)   24%,
+    var(--navy2)  46%,
+    #1E4C95     68%,
     var(--blue3) 88%,
-    #4C9CF0     100%);
-  background-size: 200% 200%;
-  animation: heroGradientShift 16s ease-in-out infinite;
+    #5BAEF0     100%);
+  background-size: 220% 220%;
+  animation: heroGradientShift 18s ease-in-out infinite;
   flex-shrink: 0;
 }
 @keyframes heroGradientShift {
-  0%, 100% { background-position: 0% 40%; }
-  50%      { background-position: 100% 60%; }
+  0%, 100% { background-position: 0% 35%; }
+  50%      { background-position: 100% 65%; }
 }
 
+/* Mesh glow + dot-grid halus — sentuhan "premium fintech" di balik foto */
 .hero::before {
   content: "";
   position: absolute; inset: 0;
   background:
-    radial-gradient(480px 280px at 88% 0%, rgba(91,174,240,.35), transparent 70%),
-    radial-gradient(380px 260px at 8% 110%, rgba(45,116,216,.25), transparent 70%);
+    radial-gradient(560px 340px at 92% -12%, rgba(140,200,255,.50), transparent 62%),
+    radial-gradient(460px 320px at 108% 108%, rgba(46,123,219,.40), transparent 65%),
+    radial-gradient(420px 300px at -10% 108%, rgba(3,8,18,.65), transparent 60%),
+    radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 22px 22px;
+  background-repeat: no-repeat, no-repeat, no-repeat, repeat;
   pointer-events: none;
 }
 
@@ -252,14 +259,27 @@ button { cursor: pointer; font-family: var(--sans); }
   font-size: clamp(20px, 3vw, 30px);
   font-weight: 700; color: #fff; line-height: 1.12;
 }
-.hero-title .hl { color: #5BAEF0; }
+.hero-title .hl {
+  position: relative;
+  background: linear-gradient(95deg, #BFE0FF 0%, #FFFFFF 45%, #F4C76B 115%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero-title .hl::after {
+  content: "";
+  position: absolute; left: 1px; right: -2px; bottom: -4px; height: 2px;
+  background: linear-gradient(90deg, #5BAEF0, #F4C76B);
+  border-radius: 2px; opacity: .85;
+}
 .hero-sub1 { font-size: clamp(13px, 1.7vw, 15px); color: #C8D8EB; margin-top: 10px; }
 .hero-sub2 { font-size: clamp(11px, 1.4vw, 13px);  color: #7A92A8; margin-top: 4px; }
 
 /* ════════════════════════════════
    WELCOME SCREEN — PRODUCT GRID
 ════════════════════════════════ */
-.grid-wrap { flex: 1; padding: 20px; }
+.grid-wrap {
+  flex: 1; padding: 20px;
+  background: radial-gradient(900px 360px at 50% -8%, rgba(46,123,219,.07), transparent 65%);
+}
 .product-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -285,7 +305,11 @@ button { cursor: pointer; font-family: var(--sans); }
 .prod-icon  {
   display: inline-flex; padding: 8px 10px; border-radius: 8px;
   font-size: 22px; margin-bottom: 12px;
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,.03);
+  background-image: linear-gradient(135deg, rgba(255,255,255,.6), transparent 60%);
+  background-blend-mode: overlay;
+  box-shadow:
+    inset 0 0 0 1px rgba(0,0,0,.04),
+    0 4px 10px -2px color-mix(in srgb, var(--pc, var(--accent)) 35%, transparent);
 }
 .prod-name { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
 .prod-sub  { font-size: 10px; color: var(--text2); }
