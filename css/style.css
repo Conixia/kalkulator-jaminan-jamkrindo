@@ -45,7 +45,16 @@
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
   font-family: var(--sans);
-  background: linear-gradient(180deg, #EAF2FC 0%, #F2F5F8 280px, #F3F3F3 600px);
+  /* Latar gradasi penuh — bukan cuma di bawah header, tapi sepanjang halaman.
+     Beberapa zona warna sangat lembut (biru, teal, emas) menggemakan warna
+     tiap kartu produk supaya semuanya terasa satu palet, tidak bertabrakan. */
+  background:
+    radial-gradient(1100px 620px at 12% -6%,  rgba(46,123,219,.16), transparent 58%),
+    radial-gradient(900px  560px at 100% 10%, rgba(91,174,240,.13), transparent 55%),
+    radial-gradient(780px  520px at 88% 92%,  rgba(13,122,111,.09), transparent 58%),
+    radial-gradient(700px  480px at 2% 96%,   rgba(214,160,24,.08), transparent 55%),
+    linear-gradient(175deg, #E3EEFB 0%, #EDF3FA 30%, #F1F5F9 60%, #ECF1F7 100%);
+  background-attachment: fixed;
   color: var(--text);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -107,7 +116,8 @@ button { cursor: pointer; font-family: var(--sans); }
    SHARED: FOOTER
 ════════════════════════════════ */
 .footer {
-  background: #FAFAFA; border-top: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(255,255,255,.4) 0%, rgba(255,255,255,.75) 100%);
+  border-top: 1px solid var(--border);
   padding: 10px 24px; margin-top: auto; flex-shrink: 0;
 }
 .footer-inner {
@@ -276,10 +286,7 @@ button { cursor: pointer; font-family: var(--sans); }
 /* ════════════════════════════════
    WELCOME SCREEN — PRODUCT GRID
 ════════════════════════════════ */
-.grid-wrap {
-  flex: 1; padding: 20px;
-  background: radial-gradient(900px 360px at 50% -8%, rgba(46,123,219,.07), transparent 65%);
-}
+.grid-wrap { flex: 1; padding: 20px; }
 .product-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
