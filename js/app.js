@@ -28,6 +28,24 @@ function getTenorRange(b) {
   return null;
 }
 
+/* ── COLOR HELPERS (untuk gradasi per-kartu) ── */
+function hexToRgb(hex){
+  const h = hex.replace("#","");
+  const n = parseInt(h.length===3 ? h.split("").map(c=>c+c).join("") : h, 16);
+  return { r:(n>>16)&255, g:(n>>8)&255, b:n&255 };
+}
+function lighten(hex, pct){
+  const {r,g,b} = hexToRgb(hex);
+  const mix = c => Math.round(c + (255-c)*pct);
+  return `rgb(${mix(r)},${mix(g)},${mix(b)})`;
+}
+function darken(hex, pct){
+  const {r,g,b} = hexToRgb(hex);
+  const mix = c => Math.round(c*(1-pct));
+  return `rgb(${mix(r)},${mix(g)},${mix(b)})`;
+}
+function gradOf(hex){ return `linear-gradient(120deg, ${darken(hex,.12)} 0%, ${hex} 55%, ${lighten(hex,.22)} 100%)`; }
+
 /* ── PRODUCTS ── */
 const PRODUCTS = [
 
@@ -50,7 +68,7 @@ const PRODUCTS = [
   {
     id:"kbg_mandiri", name:"Kontra Bank Garansi Mandiri",
     subtitle:"Penjaminan atas Bank Garansi Bank Mandiri",
-    icon:"🏦", color:"#C9930A", colorBg:"#FEF9E8",
+    icon:"🏦", color:"#D6A018", colorBg:"#FEF8E8",
     type:"kbg_tenor",
     programs:{
       "KBG":{
@@ -79,7 +97,7 @@ const PRODUCTS = [
   {
     id:"kbg_bni", name:"Kontra Bank Garansi BNI",
     subtitle:"Penjaminan atas Bank Garansi BNI",
-    icon:"🏛️", color:"#E06010", colorBg:"#FEF0E6",
+    icon:"🏛️", color:"#E2620C", colorBg:"#FEF0E6",
     type:"kbg_tenor",
     programs:{
       "BNI":{
@@ -104,7 +122,7 @@ const PRODUCTS = [
   {
     id:"kbg_bri", name:"Kontra Bank Garansi BRI",
     subtitle:"Penjaminan atas Bank Garansi BRI",
-    icon:"💳", color:"#1A4FA0", colorBg:"#EBF0FB",
+    icon:"💳", color:"#0C8C7D", colorBg:"#E6F7F4",
     type:"kbg_tenor",
     programs:{
       "BRI":{
@@ -215,19 +233,19 @@ function buildProductGrid(){
   const grid=el("pgrid");
   PRODUCTS.forEach(p=>{
     const card=document.createElement("div");
-    card.className="prod-card"; card.onclick=()=>openCalc(p);
+    card.className="prod-card"; card.style.setProperty("--pc",p.color); card.onclick=()=>openCalc(p);
     const minLine=p.type==="kbg_tenor"
       ? `Min. IJP: ${fmtRp(Object.values(p.programs)[0].minimum)}`
       : p.type==="surety" ? `Minimum: ${fmtRp(p.minimum)}` : `Tarif segera hadir`;
     card.innerHTML=`
-      <div class="prod-strip" style="background:${p.color}"></div>
+      <div class="prod-strip" style="background:${gradOf(p.color)}"></div>
       <div class="prod-body">
         <div class="prod-icon" style="background:${p.colorBg}">${p.icon}</div>
         <div class="prod-name">${p.name}</div>
         <div class="prod-sub">${p.subtitle}</div>
         <div class="prod-min">${minLine}</div>
       </div>
-      <div class="prod-cta" style="background:${p.color}">Buka Kalkulator &nbsp;›</div>`;
+      <div class="prod-cta" style="background:${gradOf(p.color)}">Buka Kalkulator &nbsp;›</div>`;
     grid.appendChild(card);
   });
 }
@@ -249,7 +267,7 @@ function openCalc(p){
   badge.textContent=`${p.icon}  ${p.name.toUpperCase()}`;
   el("ctitle").textContent=`Kalkulator ${p.name}`;
   el("csub").textContent=p.subtitle;
-  el("btnhitung").style.background=p.color;
+  el("btnhitung").style.background=gradOf(p.color);
   el("btnhitung").style.display="";
 
   el("rzone").innerHTML=""; el("hzone").innerHTML="";
